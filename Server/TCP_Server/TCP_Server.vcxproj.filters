@@ -13,5 +13,33 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="IOCP">
+      <UniqueIdentifier>{1d6939ed-a69a-452d-9a38-ac4719e91779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RIO">
+      <UniqueIdentifier>{d5813397-628d-4a33-be68-b4f35097fff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IOCP\Thread">
+      <UniqueIdentifier>{a35ebc5b-7ece-49e7-8f30-e65d05554f20}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IOCPServer.h">
+      <Filter>IOCP</Filter>
+    </ClInclude>
+    <ClInclude Include="IOCPBuffer.h">
+      <Filter>IOCP</Filter>
+    </ClInclude>
+    <ClInclude Include="IOCPThread.h">
+      <Filter>IOCP</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="IOCPServer.cpp">
+      <Filter>IOCP</Filter>
+    </ClCompile>
+    <ClCompile Include="IOCPThread.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
