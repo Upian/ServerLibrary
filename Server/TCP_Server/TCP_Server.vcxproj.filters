@@ -30,7 +30,16 @@
     <ClInclude Include="IOCPBuffer.h">
       <Filter>IOCP</Filter>
     </ClInclude>
+    <ClInclude Include="IOCPPacket.h">
+      <Filter>IOCP</Filter>
+    </ClInclude>
+    <ClInclude Include="IOCPWorker.h">
+      <Filter>IOCP</Filter>
+    </ClInclude>
     <ClInclude Include="IOCPThread.h">
+      <Filter>IOCP\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="IOCPSocket.h">
       <Filter>IOCP</Filter>
     </ClInclude>
   </ItemGroup>
@@ -39,7 +48,10 @@
       <Filter>IOCP</Filter>
     </ClCompile>
     <ClCompile Include="IOCPThread.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>IOCP\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="IOCPSocket.cpp">
+      <Filter>IOCP</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

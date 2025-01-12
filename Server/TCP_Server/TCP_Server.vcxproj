@@ -129,11 +129,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="IOCPBuffer.h" />
+    <ClInclude Include="IOCPPacket.h" />
     <ClInclude Include="IOCPServer.h" />
+    <ClInclude Include="IOCPSocket.h" />
     <ClInclude Include="IOCPThread.h" />
+    <ClInclude Include="IOCPWorker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IOCPServer.cpp" />
+    <ClCompile Include="IOCPSocket.cpp" />
     <ClCompile Include="IOCPThread.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
