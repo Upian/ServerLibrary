@@ -1,4 +1,4 @@
-#include "IOCPSocket.h"
+﻿#include "IOCPSocket.h"
 #include <Ws2tcpip.h>
 
 bool IOCPSocket::CerateSocket(int _adressFamily, int _socketType, IPPROTO _protocol, LPWSAPROTOCOL_INFO _ipProtocolInfo, GROUP _group, DWORD _wsaFlag)
@@ -138,4 +138,24 @@ bool IOCPSocket::WSARecvFrom( LPWSABUF _lpBuffers, DWORD _dwBufferCount, LPDWORD
 			return false;
 	}
 	return true;
+}
+
+/*
+* SD_SEND: 송신을 종료 – 더 이상 데이터를 보내지 않음.
+* SD_RECEIVE: 수신을 종료 – 더 이상 데이터를 받지 않음.
+* SD_BOTH: 송수신 모두 종료.
+*/
+void IOCPSocket::ShutDown( int _how /*= SD_BOTH*/)
+{
+	return 0 == ::shutdown( m_socket, _how );
+}
+
+bool IOCPSocket::CloseSocket()
+{
+	if ( 0 != ::closesocket( m_socket ) )
+		return false;
+
+	m_socket = INVALID_SOCKET;
+	return true;
+	
 }
