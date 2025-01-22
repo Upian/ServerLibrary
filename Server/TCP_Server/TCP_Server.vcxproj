@@ -133,7 +133,7 @@
     <ClInclude Include="IOCPServer.h" />
     <ClInclude Include="IOCPSocket.h" />
     <ClInclude Include="IOCPThread.h" />
-    <ClInclude Include="IOCPWorker.h" />
+    <ClInclude Include="IOCPSession.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IOCPServer.cpp" />

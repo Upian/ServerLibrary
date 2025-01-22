@@ -1,6 +1,14 @@
 ﻿#include "IOCPSocket.h"
 #include <Ws2tcpip.h>
 
+IOCPSocket::~IOCPSocket()
+{
+	if ( INVALID_SOCKET == m_socket )
+		return;
+//	this->ShutDown();
+	this->CloseSocket();
+}
+
 bool IOCPSocket::CerateSocket(int _adressFamily, int _socketType, IPPROTO _protocol, LPWSAPROTOCOL_INFO _ipProtocolInfo, GROUP _group, DWORD _wsaFlag)
 {
 	m_socket = ::WSASocket(_adressFamily, _socketType, _protocol, _ipProtocolInfo, _group, _wsaFlag);

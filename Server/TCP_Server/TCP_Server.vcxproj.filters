@@ -33,7 +33,7 @@
     <ClInclude Include="IOCPPacket.h">
       <Filter>IOCP</Filter>
     </ClInclude>
-    <ClInclude Include="IOCPWorker.h">
+    <ClInclude Include="IOCPSession.h">
       <Filter>IOCP</Filter>
     </ClInclude>
     <ClInclude Include="IOCPThread.h">

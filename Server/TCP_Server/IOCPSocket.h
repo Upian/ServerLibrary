@@ -8,6 +8,9 @@
 class IOCPSocket
 {
 public:
+	IOCPSocket() = default;
+	virtual ~IOCPSocket();
+
 	SOCKET GetSocket() { return m_socket; }
 
 	bool CerateSocket(int _adressFamily, int _socketType, IPPROTO _protocol, LPWSAPROTOCOL_INFO _ipProtocolInfo, GROUP _group, DWORD _wsaFlag);
