@@ -153,7 +153,7 @@ bool IOCPSocket::WSARecvFrom( LPWSABUF _lpBuffers, DWORD _dwBufferCount, LPDWORD
 * SD_RECEIVE: 수신을 종료 – 더 이상 데이터를 받지 않음.
 * SD_BOTH: 송수신 모두 종료.
 */
-void IOCPSocket::ShutDown( int _how /*= SD_BOTH*/)
+bool IOCPSocket::ShutDown( int _how /*= SD_BOTH*/)
 {
 	return 0 == ::shutdown( m_socket, _how );
 }
@@ -165,5 +165,4 @@ bool IOCPSocket::CloseSocket()
 
 	m_socket = INVALID_SOCKET;
 	return true;
-	
 }
