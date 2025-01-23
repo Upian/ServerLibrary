@@ -5,9 +5,11 @@
 class IOCPServer 
 {
 public:
-	IOCPServer(unsigned short _port);
+	IOCPServer();
+
+	void Initialize(unsigned short _port);
 
 
 private:
-
+	//WorkManager m_workManager;
 };
