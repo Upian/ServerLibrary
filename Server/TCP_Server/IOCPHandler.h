@@ -6,15 +6,17 @@ class IOCPHandler
 {
 public:
 	IOCPHandler() = default;
-	virtual ~IOCPHandler()
+	~IOCPHandler()
 	{
 		if ( nullptr != m_IOCPHandle )
+		{
 			CloseHandle( m_IOCPHandle );
-		m_IOCPHandle = nullptr;
+			m_IOCPHandle = nullptr;
+		}
 	}
 
 	//IOCP 핸들 생성
-	inline bool Initialize( DWORD _numberOfConcurrentThreads )
+	inline bool Initialize( DWORD _numberOfConcurrentThreads = 0 )
 	{
 		m_IOCPHandle = CreateIoCompletionPort( INVALID_HANDLE_VALUE, NULL, 0, _numberOfConcurrentThreads );
 		return  nullptr != m_IOCPHandle;

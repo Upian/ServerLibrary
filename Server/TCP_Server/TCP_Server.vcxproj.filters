@@ -42,7 +42,7 @@
     <ClInclude Include="IOCPSocket.h">
       <Filter>IOCP</Filter>
     </ClInclude>
-    <ClInclude Include="IOCPHandle.h">
+    <ClInclude Include="IOCPHandler.h">
       <Filter>IOCP</Filter>
     </ClInclude>
   </ItemGroup>
@@ -55,9 +55,6 @@
     </ClCompile>
     <ClCompile Include="IOCPSocket.cpp">
       <Filter>IOCP</Filter>
-    </ClCompile>
-    <ClCompile Include="IOCPHandle.cpp">
-      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

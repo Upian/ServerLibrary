@@ -129,7 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="IOCPBuffer.h" />
-    <ClInclude Include="IOCPHandle.h" />
+    <ClInclude Include="IOCPHandler.h" />
     <ClInclude Include="IOCPPacket.h" />
     <ClInclude Include="IOCPServer.h" />
     <ClInclude Include="IOCPSocket.h" />
@@ -137,7 +137,6 @@
     <ClInclude Include="IOCPSession.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IOCPHandle.cpp" />
     <ClCompile Include="IOCPServer.cpp" />
     <ClCompile Include="IOCPSocket.cpp" />
     <ClCompile Include="IOCPThread.cpp" />
