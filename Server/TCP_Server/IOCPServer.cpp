@@ -3,7 +3,7 @@
 //Singleton
 //IOCPServer IOCPServer::m_instance;
 
-IOCPServer& IOCPServer::GetInstance()
+IOCPServer& IOCPServer::GetInstance(DWORD _numberOfConcurrentThreads /*= 0*/)
 {
 	static IOCPServer instance;
 	return instance;

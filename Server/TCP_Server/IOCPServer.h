@@ -16,7 +16,7 @@
 class IOCPServer 
 {
 public:
-	static IOCPServer& GetInstance();
+	static IOCPServer& GetInstance(DWORD _numberOfConcurrentThreads = 0);
 
 	void CreateNewAcceptor( SOCKET _listenSocket, SOCKADDR_IN _addr );
 
