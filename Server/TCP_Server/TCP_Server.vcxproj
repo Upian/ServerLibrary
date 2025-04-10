@@ -136,11 +136,13 @@
     <ClInclude Include="IOCPSocket.h" />
     <ClInclude Include="IOCPThread.h" />
     <ClInclude Include="IOCPSession.h" />
+    <ClInclude Include="WinSock.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IOCPServer.cpp" />
     <ClCompile Include="IOCPSocket.cpp" />
     <ClCompile Include="IOCPThread.cpp" />
+    <ClCompile Include="WinSock.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

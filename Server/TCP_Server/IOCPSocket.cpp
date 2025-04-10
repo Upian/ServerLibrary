@@ -16,7 +16,7 @@ bool IOCPSocket::CerateSocket(int _adressFamily, int _socketType, IPPROTO _proto
 	return INVALID_SOCKET != m_socket;
 }
 
-bool IOCPSocket::Bind(const char* _ip, unsigned short _port)
+bool IOCPSocket::Bind(const char* _ip, USHORT _port)
 {
 	SOCKADDR_IN addr;
 
@@ -43,13 +43,13 @@ SOCKET IOCPSocket::Accept(sockaddr* addr, int* addrlen)
 
 bool IOCPSocket::AcceptEX(IOCPSocket* _listenSocket, PVOID lpOutputBuffer, DWORD dwReceiveDataLength, DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength, LPDWORD lpdwBytesReceived, LPOVERLAPPED lpOverlapped)
 {
-	if (FALSE == ::AcceptEx(_listenSocket->GetSocket(), m_socket/*client socket*/, lpOutputBuffer, dwReceiveDataLength, dwLocalAddressLength,
-		dwRemoteAddressLength, lpdwBytesReceived, lpOverlapped))
-	{
-		int err = ::WSAGetLastError();
-		if (WSA_IO_PENDING != err && WSAEWOULDBLOCK != err)
-			return false;
-	}
+//	if (FALSE == ::AcceptEx(_listenSocket->GetSocket(), m_socket/*client socket*/, lpOutputBuffer, dwReceiveDataLength, dwLocalAddressLength,
+//		dwRemoteAddressLength, lpdwBytesReceived, lpOverlapped))
+//	{
+//		int err = ::WSAGetLastError();
+//		if (WSA_IO_PENDING != err && WSAEWOULDBLOCK != err)
+//			return false;
+//	}
 	return true;
 }
 

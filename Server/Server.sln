@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{7E983C51-11D1-4ED2-99AC-81962877600E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{39B356D5-2DAC-4739-A84B-DF779A64811F} = {39B356D5-2DAC-4739-A84B-DF779A64811F}
+		{625A7D9A-898F-451E-82C7-EE6B88C947D8} = {625A7D9A-898F-451E-82C7-EE6B88C947D8}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TCP_Server", "TCP_Server\TCP_Server.vcxproj", "{625A7D9A-898F-451E-82C7-EE6B88C947D8}"
 EndProject

@@ -45,6 +45,9 @@
     <ClInclude Include="IOCPHandler.h">
       <Filter>IOCP</Filter>
     </ClInclude>
+    <ClInclude Include="WinSock.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IOCPServer.cpp">
@@ -55,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="IOCPSocket.cpp">
       <Filter>IOCP</Filter>
+    </ClCompile>
+    <ClCompile Include="WinSock.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

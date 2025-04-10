@@ -2,7 +2,7 @@
 #include <winsock2.h>
 #include <windows.h>
 #include "IOCPHandler.h"
-
+#include "WinSock.h"
 /*
 * IOCPServer
 * Singleton
@@ -20,7 +20,7 @@ public:
 
 	void CreateNewAcceptor( SOCKET _listenSocket, SOCKADDR_IN _addr );
 
-
+	virtual ~IOCPServer();
 private:
 	IOCPServer();
 	IOCPServer( const IOCPServer& ) = delete;
@@ -29,6 +29,7 @@ private:
 
 private:
 	IOCPHandler m_IOCPHandler;
+	WinSock m_winSock;
 	//WorkManager m_workManager;
 };
 

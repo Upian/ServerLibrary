@@ -9,8 +9,8 @@
 class IOCPSession : public IOCPSocket
 {
 public:
-	IOCPSession();
-	~IOCPSession();
+//	IOCPSession();
+//	~IOCPSession();
 
 	bool Initialize( SOCKET _socket, SOCKADDR_IN _addr );
 private:
