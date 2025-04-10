@@ -36,7 +36,7 @@
     <ClInclude Include="IOCPSession.h">
       <Filter>IOCP</Filter>
     </ClInclude>
-    <ClInclude Include="IOCPThread.h">
+    <ClInclude Include="IOCPThreadManager.h">
       <Filter>IOCP\Thread</Filter>
     </ClInclude>
     <ClInclude Include="IOCPSocket.h">
@@ -53,7 +53,7 @@
     <ClCompile Include="IOCPServer.cpp">
       <Filter>IOCP</Filter>
     </ClCompile>
-    <ClCompile Include="IOCPThread.cpp">
+    <ClCompile Include="IOCPThreadManager.cpp">
       <Filter>IOCP\Thread</Filter>
     </ClCompile>
     <ClCompile Include="IOCPSocket.cpp">

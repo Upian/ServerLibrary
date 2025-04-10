@@ -3,6 +3,7 @@
 #include <windows.h>
 #include "IOCPHandler.h"
 #include "WinSock.h"
+#include "IOCPThreadManager.h"
 /*
 * IOCPServer
 * Singleton
@@ -32,6 +33,7 @@ namespace IOCP
 	private:
 		IOCP::Handler m_IOCPHandler;
 		WinSock m_winSock;
+		IOCP::ThreadManager m_threadManager;
 		//WorkManager m_workManager;
 	};
 }
