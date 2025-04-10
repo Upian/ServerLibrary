@@ -5,11 +5,11 @@
 
 int main()
 {
-	IOCPSocket serverSocket;
+	IOCP::Socket serverSocket;
 	serverSocket.CerateSocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
 	serverSocket.Bind(nullptr, 8333);
 	serverSocket.Listen();
 
-	IOCPServer& server = IOCPServer::GetInstance();
+	IOCP::Server& server = IOCP::Server::GetInstance();
 		
 }

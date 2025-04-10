@@ -13,23 +13,25 @@
 * IOCPHandler는 IOCP를 사용하기 위한 핸들러
 */
 
-class IOCPServer 
+namespace IOCP
 {
-public:
-	static IOCPServer& GetInstance(DWORD _numberOfConcurrentThreads = 0);
+	class Server
+	{
+	public:
+		static Server& GetInstance(DWORD _numberOfConcurrentThreads = 0);
 
-	void CreateNewAcceptor( SOCKET _listenSocket, SOCKADDR_IN _addr );
+		void CreateNewAcceptor(SOCKET _listenSocket, SOCKADDR_IN _addr);
 
-	virtual ~IOCPServer();
-private:
-	IOCPServer();
-	IOCPServer( const IOCPServer& ) = delete;
-	IOCPServer& operator=( const IOCPServer& ) = delete;
-	
+		virtual ~Server();
+	private:
+		Server();
+		Server(const Server&) = delete;
+		Server& operator=(const Server&) = delete;
 
-private:
-	IOCPHandler m_IOCPHandler;
-	WinSock m_winSock;
-	//WorkManager m_workManager;
-};
 
+	private:
+		IOCP::Handler m_IOCPHandler;
+		WinSock m_winSock;
+		//WorkManager m_workManager;
+	};
+}
