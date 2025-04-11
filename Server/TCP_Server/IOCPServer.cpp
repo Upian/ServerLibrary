@@ -25,4 +25,5 @@ Server::Server()
 	{
 //		error log
 	}
+	m_threadManager.Init(&m_IOCPHandler);
 }
