@@ -4,6 +4,8 @@
 #include "IOCPHandler.h"
 #include "WinSock.h"
 #include "IOCPThreadManager.h"
+#include "IOCPSocket.h"
+
 /*
 * IOCPServer
 * Singleton
@@ -20,10 +22,14 @@ namespace IOCP
 	{
 	public:
 		static Server& GetInstance(DWORD _numberOfConcurrentThreads = 0);
-
-		void CreateNewAcceptor(SOCKET _listenSocket, SOCKADDR_IN _addr);
-
 		virtual ~Server();
+		
+		void CreateSocket();
+
+
+		void CreateNewAcceptor(IOCP::Socket&& _listenSocket, SOCKADDR_IN _addr);
+		
+		IOCP::ThreadManager& GetThreadManager() { return m_threadManager; }
 	private:
 		Server();
 		Server(const Server&) = delete;
@@ -32,6 +38,7 @@ namespace IOCP
 
 	private:
 		IOCP::Handler m_IOCPHandler;
+		IOCP::Socket m_socket;
 		WinSock m_winSock;
 		IOCP::ThreadManager m_threadManager;
 		//WorkManager m_workManager;

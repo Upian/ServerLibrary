@@ -1,6 +1,6 @@
 #include "IOCPThreadManager.h"
 #include "IOCPHandler.h"
-#include <iostream>
+
 using IOCP::ThreadManager;
 
 //IOCP::Handler
@@ -20,9 +20,21 @@ void ThreadManager::AllocWorkThread(int _threadNum)
 
 void ThreadManager::Worker(std::stop_token _token)
 {
-	std::cout << "test1" << std::endl;
-//	while (false == _token.stop_requested())
-//	{
-//		
-//	}
+	DWORD bytesTransferred = 0;
+	ULONG_PTR completionKey = 0;
+	OVERLAPPED* overlapped = nullptr;
+
+	bool isSuccess = true;
+	//Log
+	while (false == _token.stop_requested())
+	{
+		isSuccess = m_iocpHandler->GetCompletionStatus(&bytesTransferred, &completionKey, &overlapped);
+
+		if (0 == completionKey) //Á¾·á
+			break;
+		
+		if (0 == bytesTransferred)
+			continue;
+	
+	}
 }

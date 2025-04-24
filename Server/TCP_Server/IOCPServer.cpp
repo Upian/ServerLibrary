@@ -11,8 +11,14 @@ Server& Server::GetInstance(DWORD _numberOfConcurrentThreads /*= 0*/)
 	return instance;
 }
 
-void Server::CreateNewAcceptor(SOCKET _listenSocket, SOCKADDR_IN _addr)
+void Server::CreateSocket()
 {
+
+}
+
+void Server::CreateNewAcceptor(IOCP::Socket&& _listenSocket, SOCKADDR_IN _addr)
+{
+
 }
 
 Server::~Server()
@@ -26,4 +32,5 @@ Server::Server()
 //		error log
 	}
 	m_threadManager.Init(&m_IOCPHandler);
+	
 }

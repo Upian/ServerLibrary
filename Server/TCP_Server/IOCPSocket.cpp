@@ -11,7 +11,7 @@ Socket::~Socket()
 	this->CloseSocket();
 }
 
-bool Socket::CerateSocket(int _adressFamily, int _socketType, IPPROTO _protocol, LPWSAPROTOCOL_INFO _ipProtocolInfo, GROUP _group, DWORD _wsaFlag)
+bool Socket::CreateSocket(int _adressFamily, int _socketType, IPPROTO _protocol, LPWSAPROTOCOL_INFO _ipProtocolInfo, GROUP _group, DWORD _wsaFlag)
 {
 	m_socket = ::WSASocket(_adressFamily, _socketType, _protocol, _ipProtocolInfo, _group, _wsaFlag);
 //	WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
