@@ -54,6 +54,9 @@
     <ClInclude Include="IOCPWorker.h">
       <Filter>IOCP</Filter>
     </ClInclude>
+    <ClInclude Include="IOCPWorkManager.h">
+      <Filter>IOCP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IOCPServer.cpp">

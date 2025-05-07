@@ -19,6 +19,7 @@
 
 namespace IOCP
 {
+	class WorkManager;
 	class Server
 	{
 	public:
@@ -35,11 +36,13 @@ namespace IOCP
 
 
 	private:
+		IOCP::WorkManager* m_workManager = nullptr; //Singleton
+
 		IOCP::Acceptor m_acceptor;
 		IOCP::Handler m_IOCPHandler;
 		IOCP::Socket m_socket;
 		WinSock m_winSock;
 		IOCP::ThreadManager m_threadManager;
-		//WorkManager m_workManager;
+		
 	};
 }

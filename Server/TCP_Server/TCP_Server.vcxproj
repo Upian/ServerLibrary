@@ -144,6 +144,7 @@
     <ClInclude Include="IOCPThreadManager.h" />
     <ClInclude Include="IOCPSession.h" />
     <ClInclude Include="IOCPWorker.h" />
+    <ClInclude Include="IOCPWorkManager.h" />
     <ClInclude Include="WinSock.h" />
   </ItemGroup>
   <ItemGroup>
