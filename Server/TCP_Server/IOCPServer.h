@@ -3,7 +3,7 @@
 #include <windows.h>
 #include "IOCPHandler.h"
 #include "WinSock.h"
-#include "IOCPThreadManager.h"
+#include "IOCPWorkThread.h"
 #include "IOCPSocket.h"
 #include "IOCPAcceptor.h"
 
@@ -28,7 +28,7 @@ namespace IOCP
 		
 		void CreateNewAcceptor(unsigned short _port);
 		
-		IOCP::ThreadManager& GetThreadManager() { return m_threadManager; }
+		IOCP::WorkThread& GetWorkThread() { return m_workThread; }
 	private:
 		Server();
 		Server(const Server&) = delete;
@@ -42,7 +42,7 @@ namespace IOCP
 		IOCP::Handler m_IOCPHandler;
 		IOCP::Socket m_socket;
 		WinSock m_winSock;
-		IOCP::ThreadManager m_threadManager;
+		IOCP::WorkThread m_workThread;
 		
 	};
 }

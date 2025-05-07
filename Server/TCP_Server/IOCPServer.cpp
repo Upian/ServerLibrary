@@ -31,7 +31,7 @@ Server::Server()
 	{
 //		error log
 	}
-	m_threadManager.Init(&m_IOCPHandler);
+	m_workThread.Init(&m_IOCPHandler);
 	
 	if (nullptr == m_workManager)
 	{

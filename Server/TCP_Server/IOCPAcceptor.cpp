@@ -32,4 +32,6 @@ bool IOCP::Acceptor::Start(IOCP::Handler* _handler, unsigned short _port, int _m
 
 		//session 관리해줄 객체로 이동
 	}
+	
+	return true;
 }

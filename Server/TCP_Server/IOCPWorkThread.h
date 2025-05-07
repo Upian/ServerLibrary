@@ -9,7 +9,7 @@ namespace IOCP
 {
 	class Handler;
 
-	class ThreadManager
+	class WorkThread
 	{
 	public:
 		void Init(IOCP::Handler* _iocpHandler);

@@ -19,9 +19,6 @@
     <Filter Include="RIO">
       <UniqueIdentifier>{d5813397-628d-4a33-be68-b4f35097fff2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="IOCP\Thread">
-      <UniqueIdentifier>{a35ebc5b-7ece-49e7-8f30-e65d05554f20}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IOCPServer.h">
@@ -35,9 +32,6 @@
     </ClInclude>
     <ClInclude Include="IOCPSession.h">
       <Filter>IOCP</Filter>
-    </ClInclude>
-    <ClInclude Include="IOCPThreadManager.h">
-      <Filter>IOCP\Thread</Filter>
     </ClInclude>
     <ClInclude Include="IOCPSocket.h">
       <Filter>IOCP</Filter>
@@ -57,13 +51,13 @@
     <ClInclude Include="IOCPWorkManager.h">
       <Filter>IOCP</Filter>
     </ClInclude>
+    <ClInclude Include="IOCPWorkThread.h">
+      <Filter>IOCP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IOCPServer.cpp">
       <Filter>IOCP</Filter>
-    </ClCompile>
-    <ClCompile Include="IOCPThreadManager.cpp">
-      <Filter>IOCP\Thread</Filter>
     </ClCompile>
     <ClCompile Include="IOCPSocket.cpp">
       <Filter>IOCP</Filter>
@@ -81,6 +75,9 @@
       <Filter>IOCP</Filter>
     </ClCompile>
     <ClCompile Include="IOCPSession.cpp">
+      <Filter>IOCP</Filter>
+    </ClCompile>
+    <ClCompile Include="IOCPWorkThread.cpp">
       <Filter>IOCP</Filter>
     </ClCompile>
   </ItemGroup>

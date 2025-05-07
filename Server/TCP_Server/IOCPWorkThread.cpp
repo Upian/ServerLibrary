@@ -1,15 +1,15 @@
-#include "IOCPThreadManager.h"
+#include "IOCPWorkThread.h"
 #include "IOCPHandler.h"
 
-using IOCP::ThreadManager;
+using IOCP::WorkThread;
 
 //IOCP::Handler
-void ThreadManager::Init(IOCP::Handler* _iocpHandler)
+void WorkThread::Init(IOCP::Handler* _iocpHandler)
 {
 	m_iocpHandler = _iocpHandler;
 }
 
-void ThreadManager::AllocWorkThread(int _threadNum)
+void WorkThread::AllocWorkThread(int _threadNum)
 {
 	for (int i = 0; i < _threadNum; ++i)
 	{
@@ -18,7 +18,7 @@ void ThreadManager::AllocWorkThread(int _threadNum)
 	}
 }
 
-void ThreadManager::Worker(std::stop_token _token)
+void WorkThread::Worker(std::stop_token _token)
 {
 	DWORD bytesTransferred = 0;
 	ULONG_PTR completionKey = 0;

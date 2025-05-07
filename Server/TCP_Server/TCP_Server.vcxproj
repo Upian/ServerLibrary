@@ -141,7 +141,7 @@
     <ClInclude Include="IOCPPacket.h" />
     <ClInclude Include="IOCPServer.h" />
     <ClInclude Include="IOCPSocket.h" />
-    <ClInclude Include="IOCPThreadManager.h" />
+    <ClInclude Include="IOCPWorkThread.h" />
     <ClInclude Include="IOCPSession.h" />
     <ClInclude Include="IOCPWorker.h" />
     <ClInclude Include="IOCPWorkManager.h" />
@@ -152,7 +152,7 @@
     <ClCompile Include="IOCPServer.cpp" />
     <ClCompile Include="IOCPSession.cpp" />
     <ClCompile Include="IOCPSocket.cpp" />
-    <ClCompile Include="IOCPThreadManager.cpp" />
+    <ClCompile Include="IOCPWorkThread.cpp" />
     <ClCompile Include="IOCPWorker.cpp" />
     <ClCompile Include="IOCPWorkManager.cpp" />
     <ClCompile Include="WinSock.cpp" />
