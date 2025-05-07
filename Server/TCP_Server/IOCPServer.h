@@ -5,6 +5,7 @@
 #include "WinSock.h"
 #include "IOCPThreadManager.h"
 #include "IOCPSocket.h"
+#include "IOCPAcceptor.h"
 
 /*
 * IOCPServer
@@ -24,10 +25,7 @@ namespace IOCP
 		static Server& GetInstance(DWORD _numberOfConcurrentThreads = 0);
 		virtual ~Server();
 		
-		void CreateSocket();
-
-
-		void CreateNewAcceptor(IOCP::Socket&& _listenSocket, SOCKADDR_IN _addr);
+		void CreateNewAcceptor(unsigned short _port);
 		
 		IOCP::ThreadManager& GetThreadManager() { return m_threadManager; }
 	private:
@@ -37,6 +35,7 @@ namespace IOCP
 
 
 	private:
+		IOCP::Acceptor m_acceptor;
 		IOCP::Handler m_IOCPHandler;
 		IOCP::Socket m_socket;
 		WinSock m_winSock;

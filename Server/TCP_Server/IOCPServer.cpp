@@ -11,14 +11,13 @@ Server& Server::GetInstance(DWORD _numberOfConcurrentThreads /*= 0*/)
 	return instance;
 }
 
-void Server::CreateSocket()
+
+void Server::CreateNewAcceptor(unsigned short _port)
 {
-
-}
-
-void Server::CreateNewAcceptor(IOCP::Socket&& _listenSocket, SOCKADDR_IN _addr)
-{
-
+	if (false == m_acceptor.Start(&m_IOCPHandler, _port))
+	{
+		//error log
+	}
 }
 
 Server::~Server()
