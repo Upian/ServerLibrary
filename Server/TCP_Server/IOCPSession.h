@@ -12,7 +12,7 @@ namespace IOCP
 	class Session : public Worker
 	{
 	public:
-		//	IOCPSession();
+		Session();
 		//	~IOCPSession();
 
 //		bool Initialize(SOCKET _socket, SOCKADDR_IN _addr);

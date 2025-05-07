@@ -1,12 +1,12 @@
-Ôªø#pragma once
+#pragma once
 #include <memory>
 
 template<typename T_Type>
-class ObjectPool
+class ThreadLocalObjectPool
 {
 public:
-	ObjectPool();
-	virtual ~ObjectPool();
+	ThreadLocalObjectPool();
+	virtual ~ThreadLocalObjectPool();
 
 	void Initialize(size_t _size);
 
@@ -21,18 +21,24 @@ public:
 
 	void Release(T_Type* _obj);
 protected:
-	T_Type* m_objects;
-	size_t m_objectsCount = 0;
+	static thread_local T_Type* m_objects;
+	static thread_local size_t m_objectsCount = 0;
 };
 
 template<typename T_Type>
-inline ObjectPool<T_Type>::ObjectPool() {}
+thread_local T_Type* ThreadLocalObjectPool<T_Type>::m_objects = nullptr;
 
 template<typename T_Type>
-inline ObjectPool<T_Type>::~ObjectPool() {}
+thread_local size_t ThreadLocalObjectPool<T_Type>::m_objectsCount = 0;
 
 template<typename T_Type>
-inline void ObjectPool<T_Type>::Initialize(size_t _size)
+inline ThreadLocalObjectPool<T_Type>::ThreadLocalObjectPool() {}
+
+template<typename T_Type>
+inline ThreadLocalObjectPool<T_Type>::~ThreadLocalObjectPool() {}
+
+template<typename T_Type>
+inline void ThreadLocalObjectPool<T_Type>::Initialize(size_t _size)
 {
 	for (int i = 0; i < _size; ++i)
 	{
@@ -44,13 +50,13 @@ inline void ObjectPool<T_Type>::Initialize(size_t _size)
 }
 
 template<typename T_Type>
-inline T_Type* ObjectPool<T_Type>::Alloc()
+inline T_Type* ThreadLocalObjectPool<T_Type>::Alloc()
 {
 	if (nullptr == m_objects)
 		return new T_Type();
 
 	T_Type* object = m_objects;
-	m_objects = *((T_Type**)m_objects); //Îã§Ïùå Î©îÎ™®Î¶¨ Ïó∞Í≤∞
+	m_objects = *((T_Type**)m_objects); //¥Ÿ¿Ω ∏ﬁ∏∏Æ ø¨∞·
 
 	if (0 < m_objectsCount)
 		--m_objectsCount;
@@ -59,7 +65,7 @@ inline T_Type* ObjectPool<T_Type>::Alloc()
 
 template<typename T_Type>
 template<typename ...Args>
-inline T_Type* ObjectPool<T_Type>::Alloc(Args&&... _args)
+inline T_Type* ThreadLocalObjectPool<T_Type>::Alloc(Args&&... _args)
 {
 	if (nullptr == m_objects)
 		return new T_Type(std::forward<Args>(_args)...);
@@ -73,13 +79,13 @@ inline T_Type* ObjectPool<T_Type>::Alloc(Args&&... _args)
 }
 
 template<typename T_Type>
-inline std::shared_ptr<T_Type> ObjectPool<T_Type>::AllocShared()
+inline std::shared_ptr<T_Type> ThreadLocalObjectPool<T_Type>::AllocShared()
 {
 	if (nullptr == m_objects)
 		return std::shared_ptr<T_Type>(new T_Type(), [this](T_Type* _obj) {this->Release(_obj); });
 
 	T_Type* object = m_objects;
-	m_objects = *((T_Type**)m_objects); //Îã§Ïùå Î©îÎ™®Î¶¨ Ïó∞Í≤∞
+	m_objects = *((T_Type**)m_objects); //¥Ÿ¿Ω ∏ﬁ∏∏Æ ø¨∞·
 
 	if (0 < m_objectsCount)
 		--m_objectsCount;
@@ -89,7 +95,7 @@ inline std::shared_ptr<T_Type> ObjectPool<T_Type>::AllocShared()
 
 template<typename T_Type>
 template<typename ...Args>
-inline std::shared_ptr<T_Type> ObjectPool<T_Type>::AllocShared(Args && ..._args)
+inline std::shared_ptr<T_Type> ThreadLocalObjectPool<T_Type>::AllocShared(Args && ..._args)
 {
 	if (nullptr == m_objects)
 	{
@@ -102,12 +108,12 @@ inline std::shared_ptr<T_Type> ObjectPool<T_Type>::AllocShared(Args && ..._args)
 
 	if (0 < m_objectsCount)
 		--m_objectsCount;
-	
+
 	return std::shared_ptr<T_Type>(object, [this](T_Type* _obj) {this->Release(_obj); });
 }
 
 template<typename T_Type>
-inline void ObjectPool<T_Type>::Release(T_Type* _obj)
+inline void ThreadLocalObjectPool<T_Type>::Release(T_Type* _obj)
 {
 	_obj->~T_Type();
 

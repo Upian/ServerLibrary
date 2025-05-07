@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="ThreadLocalObjectPool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

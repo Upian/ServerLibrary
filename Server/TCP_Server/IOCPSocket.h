@@ -14,7 +14,8 @@ namespace IOCP
 
 		SOCKET GetSocket() { return m_socket; }
 
-		bool CreateSocket(int _adressFamily, int _socketType, IPPROTO _protocol, LPWSAPROTOCOL_INFO _ipProtocolInfo, GROUP _group, DWORD _wsaFlag);
+		bool CreateSocket(int _adressFamily = AF_INET, int _socketType = SOCK_STREAM, IPPROTO _protocol = IPPROTO_TCP, LPWSAPROTOCOL_INFO _ipProtocolInfo = nullptr, GROUP _group = 0, DWORD _wsaFlag = WSA_FLAG_OVERLAPPED);
+
 		bool Bind(const char* _ip, USHORT _port); // _ip가 0이면 INADDR_ANY 사용
 		bool Listen(int backlog = SOMAXCONN);
 		SOCKET Accept(sockaddr* _addr, int* _addrlen);

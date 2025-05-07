@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="IOCPAcceptor.cpp" />
     <ClCompile Include="IOCPServer.cpp" />
+    <ClCompile Include="IOCPSession.cpp" />
     <ClCompile Include="IOCPSocket.cpp" />
     <ClCompile Include="IOCPThreadManager.cpp" />
     <ClCompile Include="IOCPWorker.cpp" />

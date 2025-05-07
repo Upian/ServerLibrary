@@ -80,5 +80,8 @@
     <ClCompile Include="IOCPWorkManager.cpp">
       <Filter>IOCP</Filter>
     </ClCompile>
+    <ClCompile Include="IOCPSession.cpp">
+      <Filter>IOCP</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

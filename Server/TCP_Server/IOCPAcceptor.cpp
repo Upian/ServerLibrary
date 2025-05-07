@@ -2,6 +2,7 @@
 #include "IOCPSocket.h"
 #include "ObjectPool.h"
 #include "IOCPHandler.h"
+#include "IOCPWorkManager.h"
 
 bool IOCP::Acceptor::Start(IOCP::Handler* _handler, unsigned short _port, int _maxPostAccept /*= 1*/)
 {
@@ -14,7 +15,7 @@ bool IOCP::Acceptor::Start(IOCP::Handler* _handler, unsigned short _port, int _m
 		return false;
 	}
 
-	if (m_listenSocket.Listen())
+	if (false == m_listenSocket.Listen())
 	{
 		m_listenSocket.CloseSocket();
 		return false;
@@ -25,6 +26,10 @@ bool IOCP::Acceptor::Start(IOCP::Handler* _handler, unsigned short _port, int _m
 	//Worker 생성 후 넣어줌
 	for (int i = 0; i < _maxPostAccept; ++i)
 	{
+		auto session = IOCP::WorkManager::GetSingleton()->AllocSession();
 
+		session->DoAcceptEX(m_listenSocket);
+
+		//session 관리해줄 객체로 이동
 	}
 }

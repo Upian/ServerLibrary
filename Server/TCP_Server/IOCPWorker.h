@@ -7,6 +7,8 @@ namespace IOCP
 	class Worker : public Socket
 	{
 	public:
+		Worker();
+		virtual ~Worker();
 		void DoAcceptEX(Socket& _listenSocket);
 	private:
 		char m_adressBuf[2 * (sizeof(SOCKADDR_IN) + 16)];
