@@ -14,6 +14,11 @@ public:
 	template<typename ...Args>
 	T_Type* Alloc(Args&&... _args);
 
+	std::shared_ptr<T_Type> AllocShared();
+	template<typename ...Args>
+	std::shared_ptr<T_Type> AllocShared(Args&&... _args);
+
+
 	void Release(T_Type* _obj);
 protected:
 	T_Type* m_objects = nullptr;
@@ -68,8 +73,44 @@ inline T_Type* ObjectPool<T_Type>::Alloc(Args&&... _args)
 }
 
 template<typename T_Type>
+inline std::shared_ptr<T_Type> ObjectPool<T_Type>::AllocShared()
+{
+	if (nullptr == m_objects)
+		return std::shared_ptr<T_Type>(new T_Type(), [this](T_Type* _obj) {this->Release(_obj); });
+
+	T_Type* object = m_objects;
+	m_objects = *((T_Type**)m_objects); //다음 메모리 연결
+
+	if (0 < m_objectsCount)
+		--m_objectsCount;
+
+	return std::shared_ptr<T_Type>(object, [this](T_Type* _obj) {this->Release(_obj); });
+}
+
+template<typename T_Type>
+template<typename ...Args>
+inline std::shared_ptr<T_Type> ObjectPool<T_Type>::AllocShared(Args && ..._args)
+{
+	if (nullptr == m_objects)
+	{
+		T_Type* object = new T_Type(std::forward<Args>(_args)...);
+		return std::shared_ptr<T_Type>(object, [this](T_Type* _obj) {this->Release(_obj); });
+	}
+
+	T_Type* object = new (m_objects) T_Type(std::forward<Args>(_args)...);
+	m_objects = *((T_Type**)m_objects);
+
+	if (0 < m_objectsCount)
+		--m_objectsCount;
+	
+	return std::shared_ptr<T_Type>(object, [this](T_Type* _obj) {this->Release(_obj); });
+}
+
+template<typename T_Type>
 inline void ObjectPool<T_Type>::Release(T_Type* _obj)
 {
+	_obj->~T_Type();
+
 	*((T_Type**)_obj) = m_objects;
 	m_objects = (T_Type*)_obj;
 	++m_objectsCount;
