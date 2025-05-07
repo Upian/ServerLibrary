@@ -12,13 +12,14 @@ namespace IOCP
 		Recv,
 		Count,
 	};
-
 	
 	class Buffer
 	{
 	public:
 		Buffer() = default; //юс╫ц
 		virtual ~Buffer() = default;
+
+		WSAOVERLAPPED* GetOverlapped() { return &m_overlapped; }
 
 		void 	SetWSABuf(char* _buf, int _len) { m_wsaBuf.buf = _buf;  m_wsaBuf.len = _len; }
 		void 	SetWSABuf(const WSABUF& _wsaBuf) { m_wsaBuf = _wsaBuf; }

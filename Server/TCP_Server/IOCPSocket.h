@@ -18,7 +18,7 @@ namespace IOCP
 		bool Bind(const char* _ip, USHORT _port); // _ip가 0이면 INADDR_ANY 사용
 		bool Listen(int backlog = SOMAXCONN);
 		SOCKET Accept(sockaddr* _addr, int* _addrlen);
-		bool AcceptEX(Socket* _listenSocket, PVOID lpOutputBuffer, DWORD dwReceiveDataLength, DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength, LPDWORD lpdwBytesReceived, LPOVERLAPPED lpOverlapped);
+		bool AcceptEX(Socket* _listenSocket, PVOID lpOutputBuffer, DWORD dwReceiveDataLength, /*DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength,*/ LPDWORD lpdwBytesReceived, LPOVERLAPPED lpOverlapped);
 		bool Connect(const char* _ip, USHORT _port);
 		bool ConnectEx(const char* _ip, USHORT _port, PVOID _lpSendBuffer, DWORD _dwSendDataLength, LPDWORD _lpdwBytesSent, LPOVERLAPPED _lpOverlapped);
 		bool ConnectEx(SOCKADDR_IN* _addr, PVOID _lpSendBuffer, DWORD _dwSendDataLength, LPDWORD _lpdwBytesSent, LPOVERLAPPED _lpOverlapped);

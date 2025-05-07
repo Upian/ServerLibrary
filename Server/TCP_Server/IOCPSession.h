@@ -1,6 +1,6 @@
 #pragma once
 #include <thread>
-#include "IOCPSocket.h"
+#include "IOCPWorker.h"
 
 /*
 * IOCPSession
@@ -9,13 +9,13 @@
 
 namespace IOCP
 {
-	class Session : public Socket
+	class Session : public Worker
 	{
 	public:
 		//	IOCPSession();
 		//	~IOCPSession();
 
-		bool Initialize(SOCKET _socket, SOCKADDR_IN _addr);
+//		bool Initialize(SOCKET _socket, SOCKADDR_IN _addr);
 	private:
 
 	};

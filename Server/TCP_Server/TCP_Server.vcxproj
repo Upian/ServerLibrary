@@ -70,6 +70,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)\Util\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)\Util\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -137,6 +143,7 @@
     <ClInclude Include="IOCPSocket.h" />
     <ClInclude Include="IOCPThreadManager.h" />
     <ClInclude Include="IOCPSession.h" />
+    <ClInclude Include="IOCPWorker.h" />
     <ClInclude Include="WinSock.h" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +151,7 @@
     <ClCompile Include="IOCPServer.cpp" />
     <ClCompile Include="IOCPSocket.cpp" />
     <ClCompile Include="IOCPThreadManager.cpp" />
+    <ClCompile Include="IOCPWorker.cpp" />
     <ClCompile Include="WinSock.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

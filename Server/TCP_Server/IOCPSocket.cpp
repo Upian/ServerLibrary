@@ -43,10 +43,11 @@ SOCKET Socket::Accept(sockaddr* addr, int* addrlen)
 	return ::accept(m_socket, addr, addrlen);
 }
 
-bool Socket::AcceptEX(IOCP::Socket* _listenSocket, PVOID lpOutputBuffer, DWORD dwReceiveDataLength, DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength, LPDWORD lpdwBytesReceived, LPOVERLAPPED lpOverlapped)
+//dwLocalAddressLength, dwRemoteAddressLength 둘 다 sizeof(SOCKADDR_IN) + 16
+bool Socket::AcceptEX(IOCP::Socket* _listenSocket, PVOID lpOutputBuffer, DWORD dwReceiveDataLength,/* DWORD dwLocalAddressLength, DWORD dwRemoteAddressLength,*/ LPDWORD lpdwBytesReceived, LPOVERLAPPED lpOverlapped)
 {
-	if (FALSE == ::AcceptEx(_listenSocket->GetSocket(), m_socket/*client socket*/, lpOutputBuffer, dwReceiveDataLength, dwLocalAddressLength,
-		dwRemoteAddressLength, lpdwBytesReceived, lpOverlapped))
+	if (FALSE == ::AcceptEx(_listenSocket->GetSocket(), m_socket/*client socket*/, lpOutputBuffer, dwReceiveDataLength, sizeof(SOCKADDR_IN) + 16,
+		sizeof(SOCKADDR_IN) + 16, lpdwBytesReceived, lpOverlapped))
 	{
 		int err = ::WSAGetLastError();
 		if (WSA_IO_PENDING != err && WSAEWOULDBLOCK != err)
