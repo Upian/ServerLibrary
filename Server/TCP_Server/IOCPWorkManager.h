@@ -13,7 +13,7 @@ namespace IOCP
 		DECLARE_SINGLETON(WorkManager);
 	public:
 		std::shared_ptr<Session> AllocSession() { m_poolSession.AllocShared(); }
-
+		
 	private:
 
 		ObjectPool<Session> m_poolSession;

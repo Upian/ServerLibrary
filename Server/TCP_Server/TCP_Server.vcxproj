@@ -153,6 +153,7 @@
     <ClCompile Include="IOCPSocket.cpp" />
     <ClCompile Include="IOCPThreadManager.cpp" />
     <ClCompile Include="IOCPWorker.cpp" />
+    <ClCompile Include="IOCPWorkManager.cpp" />
     <ClCompile Include="WinSock.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

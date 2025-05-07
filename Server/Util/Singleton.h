@@ -34,8 +34,10 @@ private:
 *	Initialize
 */
 template <typename T_Class>
-typename Singleton<T_Class>::SingletonClass* Singleton<T_Class>::m_instance = nullptr;
+Singleton<T_Class>::SingletonClass* Singleton<T_Class>::m_instance = nullptr;
 
+template<typename T_Class>
+std::once_flag Singleton<T_Class>::m_initFlag;
 /*
 *	Create Singleton
 */
