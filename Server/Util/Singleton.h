@@ -27,7 +27,7 @@ protected:
 
 private:
 	static SingletonClass* m_instance;
-	std::once_flag m_initFlag;
+	static std::once_flag m_initFlag;
 };
 
 /*
