@@ -9,6 +9,8 @@ public:
 	virtual ~ThreadLocalObjectPool();
 
 	void Initialize(size_t _size);
+	template<typename ...Args>
+	void Initialize(size_t _size, Args&&... _args);
 
 	T_Type* Alloc();
 	template<typename ...Args>
@@ -42,7 +44,20 @@ inline void ThreadLocalObjectPool<T_Type>::Initialize(size_t _size)
 {
 	for (int i = 0; i < _size; ++i)
 	{
-		T_Type* temp = static_cast<T_Type*>(malloc(sizeof(T_Type)));
+		T_Type* temp = new T_Type();
+		*((T_Type**)temp) = m_objects;
+		m_objects = temp;
+	}
+	m_objectsCount += _size;
+}
+
+template<typename T_Type>
+template<typename ...Args>
+inline void ThreadLocalObjectPool<T_Type>::Initialize(size_t _size, Args && ..._args)
+{
+	for (int i = 0; i < _size; ++i)
+	{
+		T_Type* temp = new T_Type(std::forward<Args>(_args)...);
 		*((T_Type**)temp) = m_objects;
 		m_objects = temp;
 	}
