@@ -45,9 +45,6 @@
     <ClInclude Include="IOCPAcceptor.h">
       <Filter>IOCP</Filter>
     </ClInclude>
-    <ClInclude Include="IOCPWorker.h">
-      <Filter>IOCP</Filter>
-    </ClInclude>
     <ClInclude Include="IOCPWorkManager.h">
       <Filter>IOCP</Filter>
     </ClInclude>
@@ -66,9 +63,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="IOCPAcceptor.cpp">
-      <Filter>IOCP</Filter>
-    </ClCompile>
-    <ClCompile Include="IOCPWorker.cpp">
       <Filter>IOCP</Filter>
     </ClCompile>
     <ClCompile Include="IOCPWorkManager.cpp">

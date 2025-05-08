@@ -1,6 +1,7 @@
 #include "IOCPBuffer.h"
 #include "IOCPWorkThread.h"
 #include "IOCPHandler.h"
+#include "IOCPSession.h"
 #include <iostream>
 //IOCP::Handler
 
@@ -42,6 +43,32 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 
 		if (false == isSuccess)
 			continue;
+		
+		if (nullptr == overlappedIO->session)
+			continue;
+
+		auto session = std::static_pointer_cast<IOCP::Session>(overlappedIO->session);
+		switch (overlappedIO->ioType)
+		{
+		case IOType::None:
+		{
+			//log
+			break;
+		}
+		case IOType::Accept:
+		{
+
+		}
+//				Send,
+		case IOType::Recv:
+		{
+
+		}
+		default:
+		{
+
+		}
+		}
 
 
 		if (0 == bytesTransferred)

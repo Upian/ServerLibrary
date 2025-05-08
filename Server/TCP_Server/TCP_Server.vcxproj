@@ -143,7 +143,6 @@
     <ClInclude Include="IOCPSocket.h" />
     <ClInclude Include="IOCPWorkThread.h" />
     <ClInclude Include="IOCPSession.h" />
-    <ClInclude Include="IOCPWorker.h" />
     <ClInclude Include="IOCPWorkManager.h" />
     <ClInclude Include="WinSock.h" />
   </ItemGroup>
@@ -153,7 +152,6 @@
     <ClCompile Include="IOCPSession.cpp" />
     <ClCompile Include="IOCPSocket.cpp" />
     <ClCompile Include="IOCPWorkThread.cpp" />
-    <ClCompile Include="IOCPWorker.cpp" />
     <ClCompile Include="IOCPWorkManager.cpp" />
     <ClCompile Include="WinSock.cpp" />
   </ItemGroup>
