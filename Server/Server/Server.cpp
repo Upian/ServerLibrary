@@ -9,4 +9,6 @@ int main()
 	IOCP::Server& server = IOCP::Server::GetInstance();
 
 	server.CreateNewAcceptor(8888);
+
+	getchar();
 }

@@ -31,6 +31,7 @@ bool IOCP::Acceptor::Start(IOCP::Handler* _handler, unsigned short _port, int _m
 		session->DoAcceptEX(m_listenSocket);
 
 		//session 관리해줄 객체로 이동
+		IOCP::WorkManager::GetSingleton()->AddSession(session);
 	}
 	
 	return true;

@@ -1,6 +1,7 @@
 #include "IOCPServer.h"
 #include <WinSock2.h>
 #include "IOCPWorkManager.h"
+#include "IOCPWorkThread.h"
 
 //Singleton
 //IOCPServer IOCPServer::m_instance;
@@ -31,7 +32,12 @@ Server::Server()
 	{
 //		error log
 	}
-	m_workThread.Init(&m_IOCPHandler);
+
+	if (nullptr == m_workThread)
+	{
+		m_workThread = new IOCP::WorkThread(&m_IOCPHandler);
+	}
+	m_workThread->Initialize(1); //³ªÁß¿¡ °ª ¹Ù²ãµÖ¾ßÇÔ
 	
 	if (nullptr == m_workManager)
 	{

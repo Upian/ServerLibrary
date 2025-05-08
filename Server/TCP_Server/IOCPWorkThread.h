@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <thread>
-#include <windows.h>
 //#include "IOCPSession.h"
 
 namespace IOCP
@@ -12,8 +11,8 @@ namespace IOCP
 	class WorkThread
 	{
 	public:
-		void Init(IOCP::Handler* _iocpHandler);
-		void AllocWorkThread(int _threadNum);
+		WorkThread(IOCP::Handler* _iocpHandler);
+		void Initialize(int _threadCount);
 	private:
 		void Worker(std::stop_token _token);
 

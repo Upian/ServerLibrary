@@ -3,7 +3,6 @@
 #include <windows.h>
 #include "IOCPHandler.h"
 #include "WinSock.h"
-#include "IOCPWorkThread.h"
 #include "IOCPSocket.h"
 #include "IOCPAcceptor.h"
 
@@ -20,6 +19,8 @@
 namespace IOCP
 {
 	class WorkManager;
+	class WorkThread;
+
 	class Server
 	{
 	public:
@@ -28,7 +29,7 @@ namespace IOCP
 		
 		void CreateNewAcceptor(unsigned short _port);
 		
-		IOCP::WorkThread& GetWorkThread() { return m_workThread; }
+		IOCP::WorkThread* GetWorkThread() { return m_workThread; }
 	private:
 		Server();
 		Server(const Server&) = delete;
@@ -37,12 +38,13 @@ namespace IOCP
 
 	private:
 		IOCP::WorkManager* m_workManager = nullptr; //Singleton
+		IOCP::WorkThread* m_workThread = nullptr;
 
 		IOCP::Acceptor m_acceptor;
 		IOCP::Handler m_IOCPHandler;
 		IOCP::Socket m_socket;
 		WinSock m_winSock;
-		IOCP::WorkThread m_workThread;
+		
 		
 	};
 }
