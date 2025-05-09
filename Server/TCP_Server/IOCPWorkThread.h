@@ -7,6 +7,7 @@
 namespace IOCP
 {
 	class Handler;
+	class Server;
 
 	class WorkThread
 	{

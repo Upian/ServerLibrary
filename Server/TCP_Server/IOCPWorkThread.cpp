@@ -58,6 +58,7 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 		case IOType::Accept:
 		{
 			session->HandleAccept();
+
 		}
 //				Send,
 		case IOType::Recv:

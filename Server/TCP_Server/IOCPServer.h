@@ -8,8 +8,8 @@
 #include "IOCPAcceptor.h"
 #include "IOCPSessionManager.h"
 #include "IOCPWorkThread.h"
-
-
+#include <type_traits>
+#include "IOCPPacketBuf.h"
 
 /*
 * IOCPServer
@@ -23,6 +23,9 @@
 
 namespace IOCP
 {
+	template<typename T>
+	concept DerivedFromPacketBuf = std::is_base_of_v<IOCP::PacketBuf, T>;
+
 	template<typename T_Server>
 	class Server : public Singleton<T_Server>
 	{
@@ -32,13 +35,17 @@ namespace IOCP
 		void Initialize(int _threadCnt, unsigned short _port, int _maxAcceptorCnt = 1);
 		IOCP::WorkThread* GetWorkThread() { return m_workThread; }
 
+		
+		template<DerivedFromPacketBuf T_Packet>
+		std::shared_ptr<T_Packet> AllocPacket();
+
 	protected:
 		Server();
 		Server(const Server&) = delete;
 		Server& operator=(const Server&) = delete;
 		
 		virtual void HandleThread() = 0; //로직 처리
-
+		virtual std::shared_ptr<IOCP::PacketBuf> AllocPacketBuf() = 0; //IOCP::PacketPool로 할당하면 됨
 	private:
 		IOCP::SessionManager* m_sessionManager = nullptr; //Singleton
 		IOCP::WorkThread* m_workThread = nullptr;
@@ -92,4 +99,12 @@ namespace IOCP
 		m_workThread->Initialize(_threadCnt);
 		m_acceptor->Start(&m_IOCPHandler, _port, _maxAcceptorCnt);
 	}
+
+	template<typename T_Server>
+	template<DerivedFromPacketBuf T_Packet>
+	inline std::shared_ptr<T_Packet> Server<T_Server>::AllocPacket()
+	{
+		return std::static_pointer_cast<T_Packet>(this->AllocPacketBuf());
+	}
+
 }
