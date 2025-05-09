@@ -45,7 +45,7 @@
     <ClInclude Include="IOCPAcceptor.h">
       <Filter>IOCP</Filter>
     </ClInclude>
-    <ClInclude Include="IOCPWorkManager.h">
+    <ClInclude Include="IOCPSessionManager.h">
       <Filter>IOCP</Filter>
     </ClInclude>
     <ClInclude Include="IOCPWorkThread.h">
@@ -68,7 +68,7 @@
     <ClCompile Include="IOCPAcceptor.cpp">
       <Filter>IOCP</Filter>
     </ClCompile>
-    <ClCompile Include="IOCPWorkManager.cpp">
+    <ClCompile Include="IOCPSessionManager.cpp">
       <Filter>IOCP</Filter>
     </ClCompile>
     <ClCompile Include="IOCPSession.cpp">

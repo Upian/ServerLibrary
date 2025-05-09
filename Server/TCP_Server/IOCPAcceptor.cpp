@@ -2,7 +2,7 @@
 #include "IOCPSocket.h"
 #include "ObjectPool.h"
 #include "IOCPHandler.h"
-#include "IOCPWorkManager.h"
+#include "IOCPSessionManager.h"
 
 bool IOCP::Acceptor::Start(IOCP::Handler* _handler, unsigned short _port, int _maxPostAccept /*= 1*/)
 {
@@ -26,7 +26,7 @@ bool IOCP::Acceptor::Start(IOCP::Handler* _handler, unsigned short _port, int _m
 	//Worker 생성 후 넣어줌
 	for (int i = 0; i < _maxPostAccept; ++i)
 	{
-		auto session = IOCP::WorkManager::GetSingleton()->AllocSession();
+		auto session = IOCP::SessionManager::GetSingleton()->AllocSession();
 
 		session->DoAcceptEX(m_listenSocket);
 	}

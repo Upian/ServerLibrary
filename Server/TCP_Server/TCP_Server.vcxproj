@@ -71,10 +71,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\Util\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Util\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)\Util\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Util\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -144,7 +144,7 @@
     <ClInclude Include="IOCPSocket.h" />
     <ClInclude Include="IOCPWorkThread.h" />
     <ClInclude Include="IOCPSession.h" />
-    <ClInclude Include="IOCPWorkManager.h" />
+    <ClInclude Include="IOCPSessionManager.h" />
     <ClInclude Include="WinSock.h" />
   </ItemGroup>
   <ItemGroup>
@@ -154,7 +154,7 @@
     <ClCompile Include="IOCPSession.cpp" />
     <ClCompile Include="IOCPSocket.cpp" />
     <ClCompile Include="IOCPWorkThread.cpp" />
-    <ClCompile Include="IOCPWorkManager.cpp" />
+    <ClCompile Include="IOCPSessionManager.cpp" />
     <ClCompile Include="WinSock.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

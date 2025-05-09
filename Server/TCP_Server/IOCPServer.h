@@ -6,6 +6,7 @@
 #include "IOCPSocket.h"
 #include "IOCPAcceptor.h"
 
+#include "Util/Singleton.h"
 /*
 * IOCPServer
 * Singleton
@@ -18,30 +19,28 @@
 
 namespace IOCP
 {
-	class WorkManager;
+	class SessionManager;
 	class WorkThread;
 
-	class Server
+	template<typename T_Server>
+	class Server : public Singleton<T_Server>
 	{
 	public:
-		static Server& GetInstance(DWORD _numberOfConcurrentThreads = 0);
 		virtual ~Server();
 		
+		void Initialize();
 		void CreateNewAcceptor(unsigned short _port);
-		
 		IOCP::WorkThread* GetWorkThread() { return m_workThread; }
 
 	protected:
-//		virtual void HandleThread() = 0; //肺流 贸府
-
-	private:
 		Server();
 		Server(const Server&) = delete;
 		Server& operator=(const Server&) = delete;
-
+		
+//		virtual void HandleThread() = 0; //肺流 贸府
 
 	private:
-		IOCP::WorkManager* m_workManager = nullptr; //Singleton
+		IOCP::SessionManager* SessionManager = nullptr; //Singleton
 		IOCP::WorkThread* m_workThread = nullptr;
 
 		IOCP::Acceptor m_acceptor;
