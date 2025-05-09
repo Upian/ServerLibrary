@@ -27,7 +27,7 @@
     <ClInclude Include="IOCPBuffer.h">
       <Filter>IOCP</Filter>
     </ClInclude>
-    <ClInclude Include="IOCPPacket.h">
+    <ClInclude Include="IOCPPacketPool.h">
       <Filter>IOCP</Filter>
     </ClInclude>
     <ClInclude Include="IOCPSession.h">
@@ -51,6 +51,9 @@
     <ClInclude Include="IOCPWorkThread.h">
       <Filter>IOCP</Filter>
     </ClInclude>
+    <ClInclude Include="IOCPPacketBuf.h">
+      <Filter>IOCP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IOCPServer.cpp">
@@ -72,6 +75,9 @@
       <Filter>IOCP</Filter>
     </ClCompile>
     <ClCompile Include="IOCPWorkThread.cpp">
+      <Filter>IOCP</Filter>
+    </ClCompile>
+    <ClCompile Include="IOCPPacketBuf.cpp">
       <Filter>IOCP</Filter>
     </ClCompile>
   </ItemGroup>

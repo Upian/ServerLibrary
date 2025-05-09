@@ -30,6 +30,10 @@ namespace IOCP
 		void CreateNewAcceptor(unsigned short _port);
 		
 		IOCP::WorkThread* GetWorkThread() { return m_workThread; }
+
+	protected:
+//		virtual void HandleThread() = 0; //로직 처리
+
 	private:
 		Server();
 		Server(const Server&) = delete;

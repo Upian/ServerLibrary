@@ -18,6 +18,8 @@ namespace IOCP
 
 		void DoAcceptEX(Socket& _listenSocket); //이 세선이 accept 대기
 
+		void HandleAccept(); //Accept 되어 누군가 들어옴
+
 	private:
 		char m_adressBuf[2 * (sizeof(SOCKADDR_IN) + 16)];
 		Buffer m_buffer;

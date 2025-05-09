@@ -138,7 +138,8 @@
     <ClInclude Include="IOCPAcceptor.h" />
     <ClInclude Include="IOCPBuffer.h" />
     <ClInclude Include="IOCPHandler.h" />
-    <ClInclude Include="IOCPPacket.h" />
+    <ClInclude Include="IOCPPacketPool.h" />
+    <ClInclude Include="IOCPPacketBuf.h" />
     <ClInclude Include="IOCPServer.h" />
     <ClInclude Include="IOCPSocket.h" />
     <ClInclude Include="IOCPWorkThread.h" />
@@ -148,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IOCPAcceptor.cpp" />
+    <ClCompile Include="IOCPPacketBuf.cpp" />
     <ClCompile Include="IOCPServer.cpp" />
     <ClCompile Include="IOCPSession.cpp" />
     <ClCompile Include="IOCPSocket.cpp" />

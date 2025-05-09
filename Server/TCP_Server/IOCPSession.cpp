@@ -20,3 +20,8 @@ void IOCP::Session::DoAcceptEX(Socket& _listenSocket)
 	IOCP::Socket::AcceptEX(&_listenSocket, m_adressBuf, 0, &lpdwBytesReceived, m_buffer.GetOverlapped());
 
 }
+
+void IOCP::Session::HandleAccept()
+{
+
+}
