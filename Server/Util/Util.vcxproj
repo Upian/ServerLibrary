@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ConcurrentQueue.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="ThreadLocalObjectPool.h" />
