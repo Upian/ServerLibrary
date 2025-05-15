@@ -51,21 +51,21 @@ inline void ConcurrentQueue<T_Type, maxSize>::TryPush(const T_Type& _value)
 	{
 		pushCursor = m_pushCursor.load(std::memory_order_relaxed);
 		Slot& slot = m_typeArray[pushCursor];
-		std::cout << "try push: " << _value << " slot(" << pushCursor << ") is empty: " << slot.IsEmpty << " expected: " << expected << std::endl;
+//		std::cout << "try push: " << _value << " slot(" << pushCursor << ") is empty: " << slot.IsEmpty << " expected: " << expected << std::endl;
 		//IsEmpty가 true면 false로 바꾸고
 		if (true == slot.IsEmpty.compare_exchange_weak(expected, false, std::memory_order_release, std::memory_order_relaxed))
 		{
-			std::cout << "push: " << _value << std::endl;
+//			std::cout << "push: " << _value << std::endl;
 			slot.Value = _value;
 			m_pushCursor.compare_exchange_strong(pushCursor, (pushCursor + 1) % maxSize, std::memory_order_release, std::memory_order_relaxed);
-			Test(true, pushCursor);
+//			Test(true, pushCursor);
 			break;
 		}
 		expected = true;
 		//다른 스레드에서 성공해서 다음 pushCursor로 갈때까지
 		std::cout << "can not push: " << _value << std::endl;
-		Test(true, pushCursor);
-		std::this_thread::yield(); // 너무 과하게 도는 것 방지
+//		Test(true, pushCursor);
+		std::this_thread::yield();
 	}
 	/*/
 	//어차피 중복되어서 들어오면 하나는 올려야 하는데
@@ -108,7 +108,7 @@ inline T_Type ConcurrentQueue<T_Type, maxSize>::TryPop()
 	size_t popCursor = 0;
 	bool expected = false;
 
-	std::cout << "try pop: " << popCursor << std::endl;
+//	std::cout << "try pop: " << popCursor << std::endl;
 	while (true)
 	{
 		popCursor = m_popCursor.load(std::memory_order_relaxed);
@@ -117,15 +117,15 @@ inline T_Type ConcurrentQueue<T_Type, maxSize>::TryPop()
 		//IsEmpty가 true면 false로 바꾸고
 		if (true == slot.IsEmpty.compare_exchange_weak(expected, true, std::memory_order_release, std::memory_order_relaxed))
 		{
-			std::cout << "pop: " << slot.Value << std::endl;
+//			std::cout << "pop: " << slot.Value << std::endl;
 			m_popCursor.compare_exchange_strong(popCursor, (popCursor + 1) % maxSize, std::memory_order_release, std::memory_order_relaxed);
-			Test(false, popCursor);
+//			Test(false, popCursor);
 			return slot.Value;
 		}
 		expected = false;
-		std::cout << "can not pop: " << std::endl;
-		Test(false, popCursor);
-		std::this_thread::yield(); // 너무 과하게 도는 것 방지
+//		std::cout << "can not pop: " << std::endl;
+//		Test(false, popCursor);
+		std::this_thread::yield();
 	}
 
 }
@@ -136,16 +136,13 @@ inline T_Type ConcurrentQueue<T_Type, maxSize>::Pop()
 	size_t popCursor = 0;
 	bool expected = false;
 
-	std::cout << "try pop: " << popCursor << std::endl;
 	popCursor = m_popCursor.load(std::memory_order_relaxed);
 	Slot& slot = m_typeArray[popCursor];
 
 	//IsEmpty가 true면 false로 바꾸고
 	if (true == slot.IsEmpty.compare_exchange_weak(expected, true, std::memory_order_release, std::memory_order_relaxed))
 	{
-		std::cout << "pop: " << slot.Value << std::endl;
 		m_popCursor.compare_exchange_strong(popCursor, (popCursor + 1) % maxSize, std::memory_order_release, std::memory_order_relaxed);
-		Test(false, popCursor);
 		return slot.Value;
 	}
 	return T_Type();
