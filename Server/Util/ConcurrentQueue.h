@@ -1,4 +1,5 @@
 #pragma once
+
 #include <atomic>
 #include <thread>
 template<typename T_Type, size_t maxSize = 1024>
@@ -9,10 +10,10 @@ private:
 	{
 		Slot() = default;
 		Slot(const T_Type& _value) : Value(_value) {}
-		Slot(const T_Type& _value, bool _isEmpty) : Value(_value), IsEmpty(_isEmpty) {}
+		Slot(const T_Type& _value, size_t _seq) : Value(_value), Seq(_seq) {}
 
 		T_Type Value;
-		std::atomic_bool IsEmpty = true; //true면 Push 가능
+		std::atomic<size_t> Seq = 0; //계속 증가
 	};
 public:
 	ConcurrentQueue();
@@ -23,7 +24,7 @@ public:
 	T_Type TryPop(); //성공할때까지 대기
 	T_Type Pop();
 
-
+	void Print();
 
 private:
 	void Test(bool _isPush, T_Type _value);
@@ -31,131 +32,143 @@ private:
 	std::atomic<size_t> m_pushCursor = 0;
 	std::atomic<size_t> m_popCursor = 0;
 
-	Slot m_typeArray[maxSize] = { Slot(), };
+	Slot m_typeArray[maxSize];
 };
 
 template<typename T_Type, size_t maxSize>
 inline ConcurrentQueue<T_Type, maxSize>::ConcurrentQueue()
 {
+	for (size_t idx = 0; idx < maxSize; ++idx)
+	{
+		m_typeArray[idx].Seq.store(idx, std::memory_order_relaxed);
+	}
 }
 
+//Slot.Seq가 pushCursor 일 경우에만 Push
+//Push 성공하면 Seq = idx + 1
 template<typename T_Type, size_t maxSize>
 inline void ConcurrentQueue<T_Type, maxSize>::TryPush(const T_Type& _value)
 {
-	size_t pushCursor = 0;
-	bool expected = true;
-	//push 위치에 m_popCursor가 있으면 Pop 할때까지 대기
-//	while (false == m_typeArray[m_pushCursor.load(std::memory_order_relaxed)].IsEmpty.compare_exchange_weak(true, false))
-	//*
+	size_t pushCursor = m_pushCursor.fetch_add(1, std::memory_order_acquire);
+	size_t expectedSeq = pushCursor;
+
 	while (true)
 	{
-		pushCursor = m_pushCursor.load(std::memory_order_relaxed);
-		Slot& slot = m_typeArray[pushCursor];
-//		std::cout << "try push: " << _value << " slot(" << pushCursor << ") is empty: " << slot.IsEmpty << " expected: " << expected << std::endl;
-		//IsEmpty가 true면 false로 바꾸고
-		if (true == slot.IsEmpty.compare_exchange_weak(expected, false, std::memory_order_release, std::memory_order_relaxed))
+		Slot& slot = m_typeArray[pushCursor % maxSize];
+
+		//*
+		if (expectedSeq == slot.Seq.load(std::memory_order_acquire))
 		{
-//			std::cout << "push: " << _value << std::endl;
 			slot.Value = _value;
-			m_pushCursor.compare_exchange_strong(pushCursor, (pushCursor + 1) % maxSize, std::memory_order_release, std::memory_order_relaxed);
-//			Test(true, pushCursor);
+			slot.Seq.store(pushCursor + 1, std::memory_order_release);
 			break;
 		}
-		expected = true;
-		//다른 스레드에서 성공해서 다음 pushCursor로 갈때까지
-		std::cout << "can not push: " << _value << std::endl;
-//		Test(true, pushCursor);
-		std::this_thread::yield();
-	}
-	/*/
-	//어차피 중복되어서 들어오면 하나는 올려야 하는데
-	while (true)
-	{
-		pushCursor = m_pushCursor.fetch_add(1, std::memory_order_relaxed) % maxSize;
-		Slot& slot = m_typeArray[pushCursor];
-
-		if (slot.IsEmpty.compare_exchange_weak(expected, false, std::memory_order_release, std::memory_order_relaxed))
+		/*/
+		if (true == slot.Seq.compare_exchange_weak(expectedSeq, pushCursor + 1, std::memory_order_release, std::memory_order_relaxed))
 		{
 			slot.Value = _value;
-			return;
+			break;
 		}
+		//*/
+
+		expectedSeq = pushCursor;
+		//다른 스레드에서 성공해서 다음 pushCursor로 갈때까지
 		std::this_thread::yield();
 	}
-	//*/
-
 }
 
+//Slot.Seq가 pushCursor 일 경우에만 Push
+//Push 성공하면 Seq = idx + 1
 template<typename T_Type, size_t maxSize>
 inline bool ConcurrentQueue<T_Type, maxSize>::Push(const T_Type& _value)
 {
-	size_t pushCursor = m_pushCursor.load(std::memory_order_relaxed);
-	Slot& slot = m_typeArray[pushCursor];
-	bool expected = true;
+	size_t pushCursor = m_pushCursor.fetch_add(1, std::memory_order_acquire);
+	Slot& slot = m_typeArray[pushCursor % maxSize];
+	size_t expectedSeq = pushCursor;
 
-	//IsEmpty가 true면 false로 바꾸고
-	if (true == slot.IsEmpty.compare_exchange_strong(expected, false, std::memory_order_release, std::memory_order_relaxed))
+	if (expectedSeq == slot.Seq.load(std::memory_order_acquire))
 	{
 		slot.Value = _value;
-		m_pushCursor.compare_exchange_strong(pushCursor, (pushCursor + 1) % maxSize, std::memory_order_release, std::memory_order_relaxed);
+		slot.Seq.store(pushCursor + 1, std::memory_order_release);
 		return true;
 	}
 	return false;
 }
 
+//Slot.Seq가 popCursor + 1 일때만 Pop
+//Pop 성공 후 popCursor = popCursor + maxSize
 template<typename T_Type, size_t maxSize>
 inline T_Type ConcurrentQueue<T_Type, maxSize>::TryPop()
 {
-	size_t popCursor = 0;
-	bool expected = false;
+	size_t popCursor = m_popCursor.fetch_add(1, std::memory_order_acquire);
+	size_t expectedSeq = popCursor + 1;
 
-//	std::cout << "try pop: " << popCursor << std::endl;
 	while (true)
 	{
-		popCursor = m_popCursor.load(std::memory_order_relaxed);
-		Slot& slot = m_typeArray[popCursor];
+		Slot& slot = m_typeArray[popCursor % maxSize];
 
-		//IsEmpty가 true면 false로 바꾸고
-		if (true == slot.IsEmpty.compare_exchange_weak(expected, true, std::memory_order_release, std::memory_order_relaxed))
+		//*
+		if (expectedSeq == slot.Seq.load(std::memory_order_acquire))
 		{
-//			std::cout << "pop: " << slot.Value << std::endl;
-			m_popCursor.compare_exchange_strong(popCursor, (popCursor + 1) % maxSize, std::memory_order_release, std::memory_order_relaxed);
-//			Test(false, popCursor);
+			T_Type value = slot.Value;
+			slot.Seq.store(popCursor + maxSize, std::memory_order_release);
+			return value;
+		}
+		/*/
+		if (true == slot.Seq.compare_exchange_weak(expectedSeq, popCursor + maxSize, std::memory_order_release, std::memory_order_relaxed))
+		{
 			return slot.Value;
 		}
-		expected = false;
-//		std::cout << "can not pop: " << std::endl;
-//		Test(false, popCursor);
+		//*/
+
+		expectedSeq = popCursor + 1;
+
+		//		printf("can not pop \t popCursor: %lld, Seq: %lld \n", popCursor, slot.Seq.load(std::memory_order_acquire));
+
 		std::this_thread::yield();
 	}
 
 }
 
+//Slot.Seq가 popCursor + 1 일때만 Pop
+//Pop 성공 후 popCursor = popCursor + maxSize
 template<typename T_Type, size_t maxSize>
 inline T_Type ConcurrentQueue<T_Type, maxSize>::Pop()
 {
-	size_t popCursor = 0;
-	bool expected = false;
+	size_t popCursor = m_popCursor.fetch_add(1, std::memory_order_acquire);
+	size_t expectedSeq = popCursor + 1;
 
-	popCursor = m_popCursor.load(std::memory_order_relaxed);
-	Slot& slot = m_typeArray[popCursor];
+	Slot& slot = m_typeArray[popCursor % maxSize];
 
-	//IsEmpty가 true면 false로 바꾸고
-	if (true == slot.IsEmpty.compare_exchange_weak(expected, true, std::memory_order_release, std::memory_order_relaxed))
+	if (expectedSeq == slot.Seq.load(std::memory_order_acquire))
 	{
-		m_popCursor.compare_exchange_strong(popCursor, (popCursor + 1) % maxSize, std::memory_order_release, std::memory_order_relaxed);
-		return slot.Value;
+		T_Type value = slot.Value;
+		slot.Seq.store(popCursor + maxSize, std::memory_order_release);
+		return value;
 	}
 	return T_Type();
 }
 
 template<typename T_Type, size_t maxSize>
-inline void ConcurrentQueue<T_Type, maxSize>::Test(bool _isPush, T_Type _value)
+inline void ConcurrentQueue<T_Type, maxSize>::Print()
 {
-	std::cout << (_isPush ? "PUSH - " : "POP - ") << "array(" << _value << "): ";
+	std::cout << "Array: ";
 	for (const auto& iter : m_typeArray)
 	{
-		std::cout << "(" << iter.Value << ", " << iter.IsEmpty << ") - ";
+		std::cout << "(" << iter.Value << ", " << iter.Seq << ") - ";
 	}
 
 	std::cout << " END " << std::endl;
+}
+
+template<typename T_Type, size_t maxSize>
+inline void ConcurrentQueue<T_Type, maxSize>::Test(bool _isPush, T_Type _value)
+{
+	//	std::cout << (_isPush ? "PUSH - " : "POP - ") << "array(" << _value << "): ";
+	//	for (const auto& iter : m_typeArray)
+	//	{
+	//		std::cout << "(" << iter.Value << ", " << iter.IsEmpty << ") - ";
+	//	}
+	//
+	//	std::cout << " END " << std::endl;
 }
