@@ -91,7 +91,8 @@ void Singleton<T_Class>::DestroySingleton()
 #ifndef DECLARE_SINGLETON
 #define DECLARE_SINGLETON( ClassName ) \
 		private: \
-			friend class Singleton< ClassName >; ClassName(); \
+			friend class Singleton< ClassName >; \
+			ClassName(); \
 		public: \
 			~ClassName(); \
 			ClassName(const ClassName&) = delete; \
