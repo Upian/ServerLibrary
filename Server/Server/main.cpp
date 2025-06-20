@@ -6,7 +6,7 @@ int main(void)
 {
 	cout << "run" << endl;
 //	auto server = TestServer::CreateSingleton();
-	TestServer server;
+	TestIOCPServer server;
 	server.Initialize(1, 8888, 1);
 
 	getchar();

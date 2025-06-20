@@ -1,21 +1,21 @@
 #include <iostream>
 #include "Server.h"
 
-TestServer::TestServer()
+TestIOCPServer::TestIOCPServer()
 {
 	m_packetPool.Initialize(100, 1024);
 }
 
-TestServer::~TestServer()
+TestIOCPServer::~TestIOCPServer()
 {
 
 }
 
-void TestServer::HandleThread()
+void TestIOCPServer::HandleThread()
 {
 }
 
-std::shared_ptr<IOCP::PacketBuf> TestServer::AllocPacketBuf()
+std::shared_ptr<IOCP::PacketBuf> TestIOCPServer::AllocPacketBuf()
 {
 	return m_packetPool.AllocShared();
 }
