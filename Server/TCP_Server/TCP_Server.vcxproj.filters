@@ -57,6 +57,9 @@
     <ClInclude Include="IOCPPacketQueue.h">
       <Filter>IOCP</Filter>
     </ClInclude>
+    <ClInclude Include="IOCPConcepts.h">
+      <Filter>IOCP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IOCPServer.cpp">

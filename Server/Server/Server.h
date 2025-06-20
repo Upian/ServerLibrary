@@ -8,10 +8,11 @@ class TestPacket : public IOCP::PacketBuf
 
 };
 
-class TestServer : public IOCP::Server<TestServer>
+class TestServer : public IOCP::Server
 {
-	DECLARE_SINGLETON(TestServer);
 public:
+	TestServer();
+	~TestServer();
 	virtual void HandleThread() override;
 	virtual std::shared_ptr<IOCP::PacketBuf> AllocPacketBuf() override;
 private:

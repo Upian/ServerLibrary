@@ -23,6 +23,8 @@ public:
 
 	void Release(T_Type* _obj);
 protected:
+//	std::atomic<T_Type*> m_objects;
+//	std::atomic <size_t> m_objectsCount = 0;
 	T_Type* m_objects;
 	size_t m_objectsCount = 0;
 

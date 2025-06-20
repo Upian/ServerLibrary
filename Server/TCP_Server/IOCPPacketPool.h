@@ -1,16 +1,13 @@
 #pragma once
 //#include "IOCPPacketBuf.h"
 #include  <type_traits>
-#include "Util/ThreadLocalObjectPool.h"
-
+//#include "Util/ThreadLocalObjectPool.h"
+#include "Util/ObjectPool.h"
+#include "IOCPConcepts.h"
 namespace IOCP
 {
-	class PacketBuf;
-
-	template<typename T>
-	concept DerivedFromPacketBuf = std::is_base_of_v<PacketBuf, T>;
-
-	template<DerivedFromPacketBuf T_Packet>
+	template<typename T_Packet>
+		requires DerivedFromPacketBuf<PacketBuf>
 	class PacketPool
 	{
 	public:
@@ -28,7 +25,8 @@ namespace IOCP
 		size_t m_objectsCount = 0;
 	};
 
-	template<DerivedFromPacketBuf T_Packet>
+	template<typename T_Packet>
+		requires DerivedFromPacketBuf<PacketBuf>
 	inline PacketPool<T_Packet>::~PacketPool()
 	{
 		while (nullptr != m_objects)
@@ -39,7 +37,8 @@ namespace IOCP
 		}
 	}
 
-	template<DerivedFromPacketBuf T_Packet>
+	template<typename T_Packet>
+		requires DerivedFromPacketBuf<PacketBuf>
 	inline void PacketPool<T_Packet>::Initialize(int _poolSize, int _bufSize)
 	{
 		for (int i = 0; i < _poolSize; ++i)
@@ -51,7 +50,9 @@ namespace IOCP
 		}
 		m_objectsCount += _poolSize;
 	}
-	template<DerivedFromPacketBuf T_Packet>
+
+	template<typename T_Packet>
+		requires DerivedFromPacketBuf<PacketBuf>
 	inline T_Packet* PacketPool<T_Packet>::Alloc()
 	{
 		if (nullptr == m_objects)
@@ -65,7 +66,8 @@ namespace IOCP
 		return object;
 	}
 
-	template<DerivedFromPacketBuf T_Packet>
+	template<typename T_Packet>
+		requires DerivedFromPacketBuf<PacketBuf>
 	inline std::shared_ptr<T_Packet> PacketPool<T_Packet>::AllocShared()
 	{
 		if (nullptr == m_objects)
@@ -80,7 +82,8 @@ namespace IOCP
 		return std::shared_ptr<T_Packet>(object, [this](T_Packet* _obj) {this->Release(_obj); });
 	}
 
-	template<DerivedFromPacketBuf T_Packet>
+	template<typename T_Packet>
+		requires DerivedFromPacketBuf<PacketBuf>
 	inline void PacketPool<T_Packet>::Release(T_Packet* _packet)
 	{
 //		_packet->~T_Packet();

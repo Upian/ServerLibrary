@@ -1,6 +1,7 @@
 #pragma once
 #include <winsock2.h>
 #include <windows.h>
+#include <type_traits>
 #include "WinSock.h"
 #include "Util/Singleton.h"
 #include "IOCPHandler.h"
@@ -8,9 +9,8 @@
 #include "IOCPAcceptor.h"
 #include "IOCPSessionManager.h"
 #include "IOCPWorkThread.h"
-#include <type_traits>
 #include "IOCPPacketBuf.h"
-
+#include "IOCPConcepts.h"
 /*
 * IOCPServer
 * Singleton
@@ -23,24 +23,19 @@
 
 namespace IOCP
 {
-	template<typename T>
-	concept DerivedFromPacketBuf = std::is_base_of_v<IOCP::PacketBuf, T>;
-
-	template<typename T_Server>
-	class Server : public Singleton<T_Server>
+	class Server
 	{
 	public:
-		virtual ~Server();
-		
 		void Initialize(int _threadCnt, unsigned short _port, int _maxAcceptorCnt = 1);
 		IOCP::WorkThread* GetWorkThread() { return m_workThread; }
 
-		
-		template<DerivedFromPacketBuf T_Packet>
+//		template<DerivedFromPacketBuf T_Packet>
+		template<typename T_Packet>
+			requires DerivedFromPacketBuf<T_Packet>
 		std::shared_ptr<T_Packet> AllocPacket();
-
 	protected:
 		Server();
+		virtual ~Server();
 		Server(const Server&) = delete;
 		Server& operator=(const Server&) = delete;
 		
@@ -56,8 +51,7 @@ namespace IOCP
 		WinSock m_winSock;
 	};
 
-	template<typename T_Server>
-	inline Server<T_Server>::Server()
+	inline Server::Server()
 	{
 		if (false == m_IOCPHandler.Initialize())
 		{
@@ -77,9 +71,8 @@ namespace IOCP
 			m_acceptor = new IOCP::Acceptor(m_sessionManager);
 		}
 	}
-
-	template<typename T_Server>
-	inline Server<T_Server>::~Server()
+	
+	inline Server::~Server()
 	{
 		if (nullptr != m_sessionManager)
 		{
@@ -92,19 +85,17 @@ namespace IOCP
 			m_workThread = nullptr;
 		}
 	}
-
-	template<typename T_Server>
-	inline void Server<T_Server>::Initialize(int _threadCnt, unsigned short _port, int _maxAcceptorCnt)
+	
+	inline void Server::Initialize(int _threadCnt, unsigned short _port, int _maxAcceptorCnt)
 	{
 		m_workThread->Initialize(_threadCnt);
 		m_acceptor->Start(&m_IOCPHandler, _port, _maxAcceptorCnt);
 	}
 
-	template<typename T_Server>
-	template<DerivedFromPacketBuf T_Packet>
-	inline std::shared_ptr<T_Packet> Server<T_Server>::AllocPacket()
+	template<typename T_Packet>
+		requires DerivedFromPacketBuf<T_Packet>
+	inline std::shared_ptr<T_Packet> Server::AllocPacket()
 	{
 		return std::static_pointer_cast<T_Packet>(this->AllocPacketBuf());
 	}
-
 }

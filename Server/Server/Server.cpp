@@ -19,3 +19,4 @@ std::shared_ptr<IOCP::PacketBuf> TestServer::AllocPacketBuf()
 {
 	return m_packetPool.AllocShared();
 }
+

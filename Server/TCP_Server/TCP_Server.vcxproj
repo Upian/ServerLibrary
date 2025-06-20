@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClInclude Include="IOCPAcceptor.h" />
     <ClInclude Include="IOCPBuffer.h" />
+    <ClInclude Include="IOCPConcepts.h" />
     <ClInclude Include="IOCPHandler.h" />
     <ClInclude Include="IOCPPacketPool.h" />
     <ClInclude Include="IOCPPacketBuf.h" />
