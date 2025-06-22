@@ -8,6 +8,7 @@ namespace IOCP
 {
 	class Handler;
 	class Server;
+	class SessionManager;
 
 	class WorkThread
 	{
@@ -21,5 +22,6 @@ namespace IOCP
 		std::vector<std::jthread> m_workerThread;
 		std::jthread m_sendThread;
 		IOCP::Handler* m_iocpHandler = nullptr;
+		IOCP::SessionManager* m_sessionManager = nullptr;
 	};
 }

@@ -3,9 +3,9 @@
 #include "IOCPHandler.h"
 #include "IOCPSessionManager.h"
 
-IOCP::Acceptor::Acceptor(IOCP::SessionManager* _sessionManager)
+IOCP::Acceptor::Acceptor()
 {
-	m_sessionManager = _sessionManager;
+	m_sessionManager = SessionManager::GetSingleton();
 }
 
 bool IOCP::Acceptor::Start(IOCP::Handler* _handler, unsigned short _port, int _maxPostAccept /*= 1*/)

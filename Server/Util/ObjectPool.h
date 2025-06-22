@@ -11,6 +11,7 @@ public:
 	void Initialize(size_t _size);
 	template<typename ...Args>
 	void Initialize(size_t _size, Args&&... _args);
+	void Clear();
 
 	T_Type* Alloc();
 	template<typename ...Args>
@@ -20,11 +21,11 @@ public:
 	template<typename ...Args>
 	std::shared_ptr<T_Type> AllocShared(Args&&... _args);
 
-
 	void Release(T_Type* _obj);
 protected:
 	std::atomic<T_Type*> m_objects;
 	//	std::atomic <size_t> m_objectsCount = 0;
+	std::mutex m_mutex;
 };
 
 template<typename T_Type>
@@ -36,6 +37,7 @@ inline ObjectPool<T_Type>::~ObjectPool() {}
 template<typename T_Type>
 inline void ObjectPool<T_Type>::Initialize(size_t _size)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
 	for (int i = 0; i < _size; ++i)
 	{
 		T_Type* temp = new T_Type();
@@ -49,6 +51,7 @@ template<typename T_Type>
 template<typename ...Args>
 inline void ObjectPool<T_Type>::Initialize(size_t _size, Args&& ..._args)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
 	for (int i = 0; i < _size; ++i)
 	{
 		T_Type* temp = new T_Type(std::forward<Args>(_args)...);
@@ -56,6 +59,20 @@ inline void ObjectPool<T_Type>::Initialize(size_t _size, Args&& ..._args)
 		m_objects = temp;
 	}
 	//	m_objectsCount += _size;
+}
+
+template<typename T_Type>
+inline void ObjectPool<T_Type>::Clear()
+{
+	std::lock_guard<std::mutex> lock(m_mutex);
+	
+	
+	while (nullptr != m_objects)
+	{
+		T_Type* object = m_objects;
+		m_objects = *((T_Type**)m_objects.load()); //다음 메모리 연결
+		delete object;
+	}
 }
 
 template<typename T_Type>

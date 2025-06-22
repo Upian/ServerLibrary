@@ -8,8 +8,7 @@ namespace IOCP
 	class Acceptor
 	{
 	public:
-		Acceptor() = delete;
-		Acceptor(IOCP::SessionManager* _sessionManager);
+		Acceptor();
 		bool Start(IOCP::Handler* _handler, unsigned short _port, int _maxPostAccept = 1);
 
 		IOCP::Socket GetListenSocket() const { return m_listenSocket; }

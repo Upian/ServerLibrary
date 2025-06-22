@@ -2,12 +2,14 @@
 #include "IOCPWorkThread.h"
 #include "IOCPHandler.h"
 #include "IOCPSession.h"
+#include "IOCPSessionManager.h"
 #include <iostream>
 //IOCP::Handler
 
 IOCP::WorkThread::WorkThread(IOCP::Handler* _iocpHandler) :
 	m_iocpHandler(_iocpHandler)
 {
+	m_sessionManager = SessionManager::GetSingleton();
 }
 
 void IOCP::WorkThread::Initialize(int _threadCount)

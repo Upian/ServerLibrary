@@ -1,20 +1,22 @@
 #pragma once
 #include "Util/ObjectPool.h"
 #include "IOCPSession.h"
+#include "Util/Singleton.h"
 #include <list>
 
 namespace IOCP
 {	
 	//서버에 연결된 객체 Session, 
 	//서버가 연결한 객체 Proxy 관리
-	class SessionManager
+	class SessionManager : public Singleton<SessionManager>
 	{
+		DECLARE_SINGLETON(SessionManager)
 	public:
-		SessionManager() = default;
-		~SessionManager() = default;
 		std::shared_ptr<Session> AllocSession() { return m_poolSession.AllocShared(); }
 		
 	private:
+		SessionManager(int _poolSize);
+
 		ObjectPool<Session> m_poolSession;
 //		ObjectPool<Proxy> m_poolProxy;
 

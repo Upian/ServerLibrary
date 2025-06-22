@@ -67,13 +67,10 @@ namespace IOCP
 		{
 			m_workThread = new IOCP::WorkThread(&m_IOCPHandler);
 		}
-		if (nullptr == m_sessionManager)
-		{
-			m_sessionManager = new IOCP::SessionManager();
-		}
+		m_sessionManager = IOCP::SessionManager::CreateSingleton();
 		if (nullptr == m_acceptor)
 		{
-			m_acceptor = new IOCP::Acceptor(m_sessionManager);
+			m_acceptor = new IOCP::Acceptor();
 		}
 	}
 	
