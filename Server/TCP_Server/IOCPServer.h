@@ -4,6 +4,7 @@
 #include <type_traits>
 #include "WinSock.h"
 #include "Util/Singleton.h"
+#include "Util/ConcurrentQueue.h"
 #include "IOCPHandler.h"
 #include "IOCPSocket.h"
 #include "IOCPAcceptor.h"
@@ -11,6 +12,7 @@
 #include "IOCPWorkThread.h"
 #include "IOCPPacketBuf.h"
 #include "IOCPConcepts.h"
+
 /*
 * IOCPServer
 * Singleton
@@ -48,6 +50,9 @@ namespace IOCP
 
 		IOCP::Handler m_IOCPHandler;
 //		IOCP::Socket m_socket;
+
+		ConcurrentQueue<int> m_conQueue;
+
 		WinSock m_winSock;
 	};
 

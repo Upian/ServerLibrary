@@ -24,11 +24,7 @@ public:
 	T_Type TryPop(); //성공할때까지 대기
 	T_Type Pop();
 
-	void Print();
-
 private:
-	void Test(bool _isPush, T_Type _value);
-
 	std::atomic<size_t> m_pushCursor = 0;
 	std::atomic<size_t> m_popCursor = 0;
 
@@ -147,28 +143,4 @@ inline T_Type ConcurrentQueue<T_Type, maxSize>::Pop()
 		return value;
 	}
 	return T_Type();
-}
-
-template<typename T_Type, size_t maxSize>
-inline void ConcurrentQueue<T_Type, maxSize>::Print()
-{
-	std::cout << "Array: ";
-	for (const auto& iter : m_typeArray)
-	{
-		std::cout << "(" << iter.Value << ", " << iter.Seq << ") - ";
-	}
-
-	std::cout << " END " << std::endl;
-}
-
-template<typename T_Type, size_t maxSize>
-inline void ConcurrentQueue<T_Type, maxSize>::Test(bool _isPush, T_Type _value)
-{
-	//	std::cout << (_isPush ? "PUSH - " : "POP - ") << "array(" << _value << "): ";
-	//	for (const auto& iter : m_typeArray)
-	//	{
-	//		std::cout << "(" << iter.Value << ", " << iter.IsEmpty << ") - ";
-	//	}
-	//
-	//	std::cout << " END " << std::endl;
 }

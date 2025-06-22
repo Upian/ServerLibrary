@@ -15,7 +15,7 @@ namespace IOCP
 		std::shared_ptr<Session> AllocSession() { return m_poolSession.AllocShared(); }
 		
 	private:
-		ObjectPool<Session, true> m_poolSession;
+		ObjectPool<Session> m_poolSession;
 //		ObjectPool<Proxy> m_poolProxy;
 
 	};

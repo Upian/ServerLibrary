@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <memory>
 #include <mutex>
-template<typename T_Type, bool UseThread = false>
+template<typename T_Type>
 class ObjectPool
 {
 public:
@@ -23,22 +23,18 @@ public:
 
 	void Release(T_Type* _obj);
 protected:
-//	std::atomic<T_Type*> m_objects;
-//	std::atomic <size_t> m_objectsCount = 0;
-	T_Type* m_objects;
-	size_t m_objectsCount = 0;
-
-	std::mutex m_mutex; //UseThread가 True일 떄만 사용
+	std::atomic<T_Type*> m_objects;
+	//	std::atomic <size_t> m_objectsCount = 0;
 };
 
-template<typename T_Type, bool UseThread>
-inline ObjectPool<T_Type, UseThread>::ObjectPool() {}
+template<typename T_Type>
+inline ObjectPool<T_Type>::ObjectPool() {}
 
-template<typename T_Type, bool UseThread>
-inline ObjectPool<T_Type, UseThread>::~ObjectPool() {}
+template<typename T_Type>
+inline ObjectPool<T_Type>::~ObjectPool() {}
 
-template<typename T_Type, bool UseThread>
-inline void ObjectPool<T_Type, UseThread>::Initialize(size_t _size)
+template<typename T_Type>
+inline void ObjectPool<T_Type>::Initialize(size_t _size)
 {
 	for (int i = 0; i < _size; ++i)
 	{
@@ -46,12 +42,12 @@ inline void ObjectPool<T_Type, UseThread>::Initialize(size_t _size)
 		*((T_Type**)temp) = m_objects;
 		m_objects = temp;
 	}
-	m_objectsCount += _size;
+	//	m_objectsCount += _size;
 }
 
-template<typename T_Type, bool UseThread>
+template<typename T_Type>
 template<typename ...Args>
-inline void ObjectPool<T_Type, UseThread>::Initialize(size_t _size, Args&& ..._args)
+inline void ObjectPool<T_Type>::Initialize(size_t _size, Args&& ..._args)
 {
 	for (int i = 0; i < _size; ++i)
 	{
@@ -59,95 +55,68 @@ inline void ObjectPool<T_Type, UseThread>::Initialize(size_t _size, Args&& ..._a
 		*((T_Type**)temp) = m_objects;
 		m_objects = temp;
 	}
-	m_objectsCount += _size;
+	//	m_objectsCount += _size;
 }
 
-template<typename T_Type, bool UseThread>
-inline T_Type* ObjectPool<T_Type, UseThread>::Alloc()
+template<typename T_Type>
+inline T_Type* ObjectPool<T_Type>::Alloc()
 {
-	if constexpr (true == UseThread)
-		std::lock_guard<std::mutex> lock(m_mutex);
-
-	if (nullptr == m_objects)
-		return new T_Type();
-
-	T_Type* object = m_objects;
-	m_objects = *((T_Type**)m_objects); //다음 메모리 연결
-
-	if (0 < m_objectsCount)
-		--m_objectsCount;
-	return object;
-}
-
-template<typename T_Type, bool UseThread>
-template<typename ...Args>
-inline T_Type* ObjectPool<T_Type, UseThread>::Alloc(Args&&... _args)
-{
-	if constexpr (true == UseThread)
-		std::lock_guard<std::mutex> lock(m_mutex);
-
-	if (nullptr == m_objects)
-		return new T_Type(std::forward<Args>(_args)...);
-
-	T_Type* object = new (m_objects) T_Type(std::forward<Args>(_args)...);
-	m_objects = *((T_Type**)m_objects);
-
-	if (0 < m_objectsCount)
-		--m_objectsCount;
-	return object;
-}
-
-template<typename T_Type, bool UseThread>
-inline std::shared_ptr<T_Type> ObjectPool<T_Type, UseThread>::AllocShared()
-{
-	if constexpr (true == UseThread)
-		std::lock_guard<std::mutex> lock(m_mutex);
-
-	if (nullptr == m_objects)
-		return std::shared_ptr<T_Type>(new T_Type(), [this](T_Type* _obj) {this->Release(_obj); });
-
-	T_Type* object = m_objects;
-	m_objects = *((T_Type**)m_objects); //다음 메모리 연결
-
-	if (0 < m_objectsCount)
-		--m_objectsCount;
-
-	return std::shared_ptr<T_Type>(object, [this](T_Type* _obj) {this->Release(_obj); });
-}
-
-template<typename T_Type, bool UseThread>
-template<typename ...Args>
-inline std::shared_ptr<T_Type> ObjectPool<T_Type, UseThread>::AllocShared(Args && ..._args)
-{
-	if constexpr (true == UseThread)
-		std::lock_guard<std::mutex> lock(m_mutex);
-
-	if (nullptr == m_objects)
+	T_Type* object = m_objects.load(std::memory_order_acquire);
+	while (nullptr != object &&
+		false == m_objects.compare_exchange_weak(object, *(T_Type**)object, std::memory_order_acq_rel, std::memory_order_acquire))
 	{
-		T_Type* object = new T_Type(std::forward<Args>(_args)...);
-		return std::shared_ptr<T_Type>(object, [this](T_Type* _obj) {this->Release(_obj); });
+		//실패하면 object는 m_objects로 변경
 	}
 
-	T_Type* object = new (m_objects) T_Type(std::forward<Args>(_args)...);
-	m_objects = *((T_Type**)m_objects);
+	//	T_Type* object = m_objects;
+	//	m_objects = *((T_Type**)m_objects); //다음 메모리 연결
 
-	if (0 < m_objectsCount)
-		--m_objectsCount;
+	//	if (0 < m_objectsCount)
+	//		--m_objectsCount;
 
+	if (nullptr == object)
+		return new T_Type();
+	return object;
+}
+
+template<typename T_Type>
+template<typename ...Args>
+inline T_Type* ObjectPool<T_Type>::Alloc(Args&&... _args)
+{
+	T_Type* object = this->Alloc();
+	return new (object) T_Type(std::forward<Args>(_args)...);
+}
+
+template<typename T_Type>
+inline std::shared_ptr<T_Type> ObjectPool<T_Type>::AllocShared()
+{
+	T_Type* object = this->Alloc();
 	return std::shared_ptr<T_Type>(object, [this](T_Type* _obj) {this->Release(_obj); });
 }
 
-template<typename T_Type, bool UseThread>
-inline void ObjectPool<T_Type, UseThread>::Release(T_Type* _obj)
+template<typename T_Type>
+template<typename ...Args>
+inline std::shared_ptr<T_Type> ObjectPool<T_Type>::AllocShared(Args && ..._args)
 {
-	if constexpr (true == UseThread)
-		std::lock_guard<std::mutex> lock(m_mutex);
+	T_Type* object = this->Alloc(std::forward<Args>(_args)...);
+	return std::shared_ptr<T_Type>(object, [this](T_Type* _obj) {this->Release(_obj); });
+}
 
+template<typename T_Type>
+inline void ObjectPool<T_Type>::Release(T_Type* _obj)
+{
 	_obj->~T_Type();
 
-	*((T_Type**)_obj) = m_objects;
-	m_objects = (T_Type*)_obj;
-	++m_objectsCount;
+	T_Type* headObject = m_objects.load(std::memory_order_acquire);
+	do
+	{
+		*((T_Type**)_obj) = headObject;
+	} while (false == m_objects.compare_exchange_weak(headObject, (T_Type*)_obj, std::memory_order_release, std::memory_order_acquire));
+
+	//	*((T_Type**)_obj) = m_objects;
+	//	m_objects = (T_Type*)_obj;
+
+	//	++m_objectsCount;
 
 	return;
 }

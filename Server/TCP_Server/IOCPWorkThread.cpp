@@ -33,7 +33,12 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 	while (false == _token.stop_requested())
 	{
 		isSuccess = m_iocpHandler->GetCompletionStatus(&bytesTransferred, &completionKey, (OVERLAPPED**)&overlappedIO);
-		std::cout << "Success: " << isSuccess << " completionKey: " << completionKey << " bytesTransferred: " << bytesTransferred << std::endl;
+		std::cout << 
+			"Success: " << isSuccess << 
+			" completionKey: " << completionKey << 
+			" bytesTransferred: " << bytesTransferred << 
+			" IOType: " << int(overlappedIO->ioType) <<
+			std::endl;
 
 		if (0 == completionKey) //Á¾·á
 			break;
@@ -58,7 +63,6 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 		case IOType::Accept:
 		{
 			session->HandleAccept();
-
 		}
 //				Send,
 		case IOType::Recv:
