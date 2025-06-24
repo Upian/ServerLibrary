@@ -23,7 +23,7 @@ public:
 
 	void Release(T_Type* _obj);
 protected:
-	std::atomic<T_Type*> m_objects;
+	std::atomic<T_Type*> m_objects = nullptr;
 	//	std::atomic <size_t> m_objectsCount = 0;
 	std::mutex m_mutex;
 };
@@ -44,7 +44,7 @@ inline void ObjectPool<T_Type>::Initialize(size_t _size)
 		*((T_Type**)temp) = m_objects;
 		m_objects = temp;
 	}
-	//	m_objectsCount += _size;
+//	m_objectsCount += _size;
 }
 
 template<typename T_Type>
@@ -58,7 +58,7 @@ inline void ObjectPool<T_Type>::Initialize(size_t _size, Args&& ..._args)
 		*((T_Type**)temp) = m_objects;
 		m_objects = temp;
 	}
-	//	m_objectsCount += _size;
+//	m_objectsCount += _size;
 }
 
 template<typename T_Type>
@@ -85,11 +85,11 @@ inline T_Type* ObjectPool<T_Type>::Alloc()
 		//실패하면 object는 m_objects로 변경
 	}
 
-	//	T_Type* object = m_objects;
-	//	m_objects = *((T_Type**)m_objects); //다음 메모리 연결
+//	T_Type* object = m_objects;
+//	m_objects = *((T_Type**)m_objects); //다음 메모리 연결
 
-	//	if (0 < m_objectsCount)
-	//		--m_objectsCount;
+//	if (0 < m_objectsCount)
+//		--m_objectsCount;
 
 	if (nullptr == object)
 		return new T_Type();
@@ -130,10 +130,10 @@ inline void ObjectPool<T_Type>::Release(T_Type* _obj)
 		*((T_Type**)_obj) = headObject;
 	} while (false == m_objects.compare_exchange_weak(headObject, (T_Type*)_obj, std::memory_order_release, std::memory_order_acquire));
 
-	//	*((T_Type**)_obj) = m_objects;
-	//	m_objects = (T_Type*)_obj;
+//	*((T_Type**)_obj) = m_objects;
+//	m_objects = (T_Type*)_obj;
 
-	//	++m_objectsCount;
+//	++m_objectsCount;
 
 	return;
 }

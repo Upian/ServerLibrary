@@ -51,10 +51,10 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 		if (false == isSuccess)
 			continue;
 		
-		if (nullptr == overlappedIO->session)
+		if (true == overlappedIO->session.expired())
 			continue;
 
-		auto session = std::static_pointer_cast<IOCP::Session>(overlappedIO->session);
+		auto session = std::static_pointer_cast<IOCP::Session>(overlappedIO->session.lock());
 		switch (overlappedIO->ioType)
 		{
 		case IOType::None:
@@ -65,6 +65,13 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 		case IOType::Accept:
 		{
 			session->HandleAccept();
+			auto newSession = m_sessionManager->AllocSession();
+
+			newSession->SetListenSocket(session->GetListenSocket());
+			newSession->DoAcceptEX();
+
+			m_sessionManager->AcceptComplete(session);
+
 		}
 //				Send,
 		case IOType::Recv:

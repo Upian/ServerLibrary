@@ -16,7 +16,7 @@ namespace IOCP
 	struct OverlappedIO : public WSAOVERLAPPED
 	{
 		IOType ioType = IOType::None;
-		std::shared_ptr<void> session = nullptr;
+		std::weak_ptr<void> session;
 	};
 
 	class Buffer
