@@ -45,45 +45,40 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 		if (0 == completionKey) //Á¾·á
 			break;
 
-		if (nullptr == overlappedIO)
-			continue;
-
-		if (false == isSuccess)
-			continue;
-		
-		if (true == overlappedIO->session.expired())
-			continue;
-
-		auto session = std::static_pointer_cast<IOCP::Session>(overlappedIO->session.lock());
-		switch (overlappedIO->ioType)
+		if (nullptr != overlappedIO &&
+			true == isSuccess &&
+			nullptr != overlappedIO->session)
 		{
-		case IOType::None:
-		{
-			//log
-			break;
-		}
-		case IOType::Accept:
-		{
-			session->HandleAccept();
-			auto newSession = m_objectManager->AllocSession();
+			auto session = std::static_pointer_cast<IOCP::Session>(overlappedIO->session);
+			switch (overlappedIO->ioType)
+			{
+			case IOType::None:
+			{
+				//log
+				break;
+			}
+			case IOType::Accept:
+			{
+				session->HandleAccept();
 
-			newSession->SetListenSocket(session->GetListenSocket());
-			std::cout << newSession->DoAcceptEX() << std::endl;
+				auto newSession = m_objectManager->AllocSession();
+				auto io = m_objectManager->AllocIO(IOType::Accept, newSession);
+				newSession->SetListenSocket(session->GetListenSocket());
+				std::cout << newSession->DoAcceptEX(io) << std::endl;
+			}
+			//				Send,
+			case IOType::Recv:
+			{
 
-			m_objectManager->AcceptComplete(session);
+			}
+			default:
+			{
 
-		}
-//				Send,
-		case IOType::Recv:
-		{
-
-		}
-		default:
-		{
-
-		}
+			}
+			}
 		}
 
+		m_objectManager->ReleaseIO(overlappedIO);
 
 		if (0 == bytesTransferred)
 			continue;

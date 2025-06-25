@@ -14,14 +14,15 @@ namespace IOCP
 		DECLARE_SINGLETON(ObjectManager)
 	public:
 		std::shared_ptr<Session> AllocSession();
-		void AcceptComplete(std::shared_ptr<Session> _session);
 
+		OverlappedIO* AllocIO(IOType _ioType, std::shared_ptr<Session> _session);
+		void ReleaseIO(OverlappedIO* _io);
 	private:
 		ObjectManager(int _poolSize);
 
 		ObjectPool<Session> m_poolSession;
 		std::mutex m_sessionMutex;
-		std::unordered_map<Session*, std::shared_ptr<Session> > m_waitAcceptMap;
+		ObjectPool<OverlappedIO> m_poolOverlappedIO;
 //		ObjectPool<Proxy> m_poolProxy;
 
 	};

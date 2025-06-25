@@ -16,12 +16,15 @@ namespace IOCP
 	struct OverlappedIO : public WSAOVERLAPPED
 	{
 		IOType ioType = IOType::None;
-		std::weak_ptr<void> session;
+		std::shared_ptr<void> session;
 
-		void Clear()
+		OverlappedIO(IOType _ioType, std::shared_ptr<void> _session) :
+			WSAOVERLAPPED(), ioType(_ioType), session(_session)
 		{
+		}
+		~OverlappedIO() {
 			ioType = IOType::None;
-			session.reset();
+			session = nullptr;
 		}
 	};
 
@@ -31,19 +34,13 @@ namespace IOCP
 		Buffer() = default; //임시
 		virtual ~Buffer() = default;
 
-		void Clear() { m_overlappedIO.Clear(); m_socket.CloseSocket(); }
-		OverlappedIO* GetOverlapped() { return &m_overlappedIO; }
+		void Clear() { m_socket.CloseSocket(); }
 
 		void 	SetWSABuf(char* _buf, int _len) { m_wsaBuf.buf = _buf;  m_wsaBuf.len = _len; }
 		void 	SetWSABuf(const WSABUF& _wsaBuf) { m_wsaBuf = _wsaBuf; }
 		WSABUF* GetWSABuf() { return &m_wsaBuf; }
 
-		void SetSession(std::weak_ptr<void> _session) { m_overlappedIO.session = _session; }
-
-		void SetIOType(IOType _ioType) { m_overlappedIO.ioType = _ioType; }
-		IOType GetIOType() const { return m_overlappedIO.ioType; }
 	private:
-		OverlappedIO m_overlappedIO;
 		WSABUF m_wsaBuf;
 		//	char buffer[1024]; //패킷에 있는 버퍼 사용
 		IOCP::Socket m_socket;

@@ -20,8 +20,7 @@ namespace IOCP
 		void SetListenSocket(Socket* _listenSocket) { m_listenSocket = _listenSocket; }
 		Socket* GetListenSocket() const { return m_listenSocket; }
 
-		bool DoAcceptEX(); //이 세선이 accept 대기
-		bool DoAcceptEX(Socket& _listenSocket); //이 세선이 accept 대기
+		bool DoAcceptEX(OverlappedIO* _io); //이 세선이 accept 대기
 
 		void HandleAccept(); //Accept 되어 누군가 들어옴
 

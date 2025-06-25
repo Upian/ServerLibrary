@@ -15,16 +15,17 @@ namespace IOCP
 	std::shared_ptr<Session> ObjectManager::AllocSession()
 	{
 		auto session = m_poolSession.AllocShared();
-		{
-			std::lock_guard<std::mutex> lock(m_sessionMutex);
-			m_waitAcceptMap.emplace(session.get(), session);
-		}
 		return session;
 	}
 
-	void ObjectManager::AcceptComplete(std::shared_ptr<Session> _session)
+	//_session이 _ioType을 위해 할당
+	OverlappedIO* ObjectManager::AllocIO(IOType _ioType, std::shared_ptr<Session> _session)
 	{
-		std::lock_guard<std::mutex> lock(m_sessionMutex);
-		m_waitAcceptMap.erase(_session.get());
+		return m_poolOverlappedIO.Alloc(_ioType, _session);
+	}
+	
+	void ObjectManager::ReleaseIO(OverlappedIO* _io)
+	{
+		m_poolOverlappedIO.Release(_io);
 	}
 }
