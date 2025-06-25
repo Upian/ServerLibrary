@@ -68,7 +68,7 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 			auto newSession = m_sessionManager->AllocSession();
 
 			newSession->SetListenSocket(session->GetListenSocket());
-			newSession->DoAcceptEX();
+			std::cout << newSession->DoAcceptEX() << std::endl;
 
 			m_sessionManager->AcceptComplete(session);
 

@@ -80,5 +80,6 @@ int main()
 	}
 
 	WSACleanup();
+	getchar();
 	return 0;
 }

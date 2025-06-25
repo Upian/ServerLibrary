@@ -5,10 +5,13 @@
 using IOCP::Socket;
 Socket::~Socket()
 {
+	this->ShutDown();
 	if ( INVALID_SOCKET == m_socket )
 		return;
-//	this->ShutDown();
+
 	this->CloseSocket();
+	m_socket == INVALID_SOCKET;
+//	m_lpfnConnectEX = nullptr;
 }
 
 bool Socket::CreateSocket(int _adressFamily, int _socketType, IPPROTO _protocol, LPWSAPROTOCOL_INFO _ipProtocolInfo, GROUP _group, DWORD _wsaFlag)
@@ -158,7 +161,11 @@ bool Socket::WSARecvFrom( LPWSABUF _lpBuffers, DWORD _dwBufferCount, LPDWORD _lp
 */
 bool Socket::ShutDown( int _how /*= SD_BOTH*/)
 {
-	return 0 == ::shutdown( m_socket, _how );
+	if (0 != ::shutdown(m_socket, _how))
+		return false;
+
+	m_socket = INVALID_SOCKET;
+	return true;
 }
 
 bool Socket::CloseSocket()

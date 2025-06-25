@@ -13,24 +13,25 @@ IOCP::Session::Session(Socket* _listenSocket) : Socket(), m_listenSocket(_listen
 
 IOCP::Session::~Session()
 {
+
 }
 
-void IOCP::Session::DoAcceptEX()
+bool IOCP::Session::DoAcceptEX()
 {
 	DWORD lpdwBytesReceived = 0;
 
 	m_buffer.SetIOType(IOType::Accept);
 	m_buffer.SetSession(this->shared_from_this());
-	IOCP::Socket::AcceptEX(m_listenSocket, m_adressBuf, 0, &lpdwBytesReceived, m_buffer.GetOverlapped());
+	return IOCP::Socket::AcceptEX(m_listenSocket, m_adressBuf, 0, &lpdwBytesReceived, m_buffer.GetOverlapped());
 }
 
-void IOCP::Session::DoAcceptEX(Socket& _listenSocket)
+bool IOCP::Session::DoAcceptEX(Socket& _listenSocket)
 {
 	DWORD lpdwBytesReceived = 0;
 
 	m_buffer.SetIOType(IOType::Accept);
 	m_buffer.SetSession(this->shared_from_this());
-	IOCP::Socket::AcceptEX(&_listenSocket, m_adressBuf, 0, &lpdwBytesReceived, m_buffer.GetOverlapped());
+	return IOCP::Socket::AcceptEX(&_listenSocket, m_adressBuf, 0, &lpdwBytesReceived, m_buffer.GetOverlapped());
 }
 
 void IOCP::Session::HandleAccept()
