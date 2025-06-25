@@ -1,7 +1,7 @@
 #pragma once
 #include "IOCPSocket.h"
 #include <memory>
-
+#include <iostream>
 namespace IOCP
 {
 	enum class IOType : unsigned char
@@ -17,6 +17,12 @@ namespace IOCP
 	{
 		IOType ioType = IOType::None;
 		std::weak_ptr<void> session;
+
+		void Clear()
+		{
+			ioType = IOType::None;
+			session.reset();
+		}
 	};
 
 	class Buffer
@@ -25,13 +31,14 @@ namespace IOCP
 		Buffer() = default; //юс╫ц
 		virtual ~Buffer() = default;
 
+		void Clear() { m_overlappedIO.Clear(); m_socket.CloseSocket(); }
 		OverlappedIO* GetOverlapped() { return &m_overlappedIO; }
 
 		void 	SetWSABuf(char* _buf, int _len) { m_wsaBuf.buf = _buf;  m_wsaBuf.len = _len; }
 		void 	SetWSABuf(const WSABUF& _wsaBuf) { m_wsaBuf = _wsaBuf; }
 		WSABUF* GetWSABuf() { return &m_wsaBuf; }
 
-		void SetSession(std::shared_ptr<void> _session) { m_overlappedIO.session = _session; }
+		void SetSession(std::weak_ptr<void> _session) { m_overlappedIO.session = _session; }
 
 		void SetIOType(IOType _ioType) { m_overlappedIO.ioType = _ioType; }
 		IOType GetIOType() const { return m_overlappedIO.ioType; }

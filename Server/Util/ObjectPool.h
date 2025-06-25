@@ -93,14 +93,21 @@ inline T_Type* ObjectPool<T_Type>::Alloc()
 
 	if (nullptr == object)
 		return new T_Type();
-	return object;
+	return new (object) T_Type();
 }
 
 template<typename T_Type>
 template<typename ...Args>
 inline T_Type* ObjectPool<T_Type>::Alloc(Args&&... _args)
 {
-	T_Type* object = this->Alloc();
+	T_Type* object = m_objects.load(std::memory_order_acquire);
+	while (nullptr != object &&
+		false == m_objects.compare_exchange_weak(object, *(T_Type**)object, std::memory_order_acq_rel, std::memory_order_acquire))
+	{
+		//실패하면 object는 m_objects로 변경
+	}
+	if (nullptr == object)
+		return new T_Type(std::forward<Args>(_args)...);
 	return new (object) T_Type(std::forward<Args>(_args)...);
 }
 

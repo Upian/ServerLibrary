@@ -27,7 +27,7 @@ namespace IOCP
 
 	private:
 		Socket* m_listenSocket = nullptr;
-		char m_adressBuf[2 * (sizeof(SOCKADDR_IN) + 16)];
+		char m_addressBuf[2 * (sizeof(SOCKADDR_IN) + 16)] = { 0, };
 		Buffer m_buffer;
 	};
 }
