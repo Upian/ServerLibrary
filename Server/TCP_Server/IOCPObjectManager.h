@@ -9,15 +9,15 @@ namespace IOCP
 {	
 	//서버에 연결된 객체 Session, 
 	//서버가 연결한 객체 Proxy 관리
-	class SessionManager : public Singleton<SessionManager>
+	class ObjectManager : public Singleton<ObjectManager>
 	{
-		DECLARE_SINGLETON(SessionManager)
+		DECLARE_SINGLETON(ObjectManager)
 	public:
 		std::shared_ptr<Session> AllocSession();
 		void AcceptComplete(std::shared_ptr<Session> _session);
 
 	private:
-		SessionManager(int _poolSize);
+		ObjectManager(int _poolSize);
 
 		ObjectPool<Session> m_poolSession;
 		std::mutex m_sessionMutex;

@@ -146,7 +146,7 @@
     <ClInclude Include="IOCPSocket.h" />
     <ClInclude Include="IOCPWorkThread.h" />
     <ClInclude Include="IOCPSession.h" />
-    <ClInclude Include="IOCPSessionManager.h" />
+    <ClInclude Include="IOCPObjectManager.h" />
     <ClInclude Include="WinSock.h" />
   </ItemGroup>
   <ItemGroup>
@@ -157,7 +157,7 @@
     <ClCompile Include="IOCPSession.cpp" />
     <ClCompile Include="IOCPSocket.cpp" />
     <ClCompile Include="IOCPWorkThread.cpp" />
-    <ClCompile Include="IOCPSessionManager.cpp" />
+    <ClCompile Include="IOCPObjectManager.cpp" />
     <ClCompile Include="WinSock.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

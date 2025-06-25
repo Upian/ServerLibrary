@@ -2,14 +2,14 @@
 #include "IOCPWorkThread.h"
 #include "IOCPHandler.h"
 #include "IOCPSession.h"
-#include "IOCPSessionManager.h"
+#include "IOCPObjectManager.h"
 #include <iostream>
 //IOCP::Handler
 
 IOCP::WorkThread::WorkThread(IOCP::Handler* _iocpHandler) :
 	m_iocpHandler(_iocpHandler)
 {
-	m_sessionManager = SessionManager::GetSingleton();
+	m_objectManager = ObjectManager::GetSingleton();
 }
 
 void IOCP::WorkThread::Initialize(int _threadCount)
@@ -65,12 +65,12 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 		case IOType::Accept:
 		{
 			session->HandleAccept();
-			auto newSession = m_sessionManager->AllocSession();
+			auto newSession = m_objectManager->AllocSession();
 
 			newSession->SetListenSocket(session->GetListenSocket());
 			std::cout << newSession->DoAcceptEX() << std::endl;
 
-			m_sessionManager->AcceptComplete(session);
+			m_objectManager->AcceptComplete(session);
 
 		}
 //				Send,

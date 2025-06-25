@@ -4,7 +4,7 @@
 namespace IOCP
 {
 	class Handler;
-	class SessionManager;
+	class ObjectManager;
 	class Acceptor
 	{
 	public:
@@ -14,6 +14,6 @@ namespace IOCP
 		IOCP::Socket GetListenSocket() const { return m_listenSocket; }
 	private:
 		IOCP::Socket m_listenSocket;
-		IOCP::SessionManager* m_sessionManager = nullptr;
+		IOCP::ObjectManager* m_objectManager = nullptr;
 	};
 }

@@ -8,7 +8,7 @@
 #include "IOCPHandler.h"
 #include "IOCPSocket.h"
 #include "IOCPAcceptor.h"
-#include "IOCPSessionManager.h"
+#include "IOCPObjectManager.h"
 #include "IOCPWorkThread.h"
 #include "IOCPPacketBuf.h"
 #include "IOCPConcepts.h"
@@ -44,7 +44,7 @@ namespace IOCP
 		virtual void HandleThread() = 0; //로직 처리
 		virtual std::shared_ptr<IOCP::PacketBuf> AllocPacketBuf() = 0; //IOCP::PacketPool로 할당하면 됨
 	private:
-		IOCP::SessionManager* m_sessionManager = nullptr; //Singleton
+		IOCP::ObjectManager* m_objectManager = nullptr; //Singleton
 		IOCP::WorkThread* m_workThread = nullptr;
 		IOCP::Acceptor* m_acceptor = nullptr;
 
@@ -62,7 +62,7 @@ namespace IOCP
 		{
 			//		error log
 		}
-		m_sessionManager = IOCP::SessionManager::CreateSingleton();
+		m_objectManager = IOCP::ObjectManager::CreateSingleton();
 
 		if (nullptr == m_workThread)
 		{
@@ -77,11 +77,7 @@ namespace IOCP
 	
 	inline Server::~Server()
 	{
-		if (nullptr != m_sessionManager)
-		{
-			delete m_sessionManager;
-			m_sessionManager = nullptr;
-		}
+		IOCP::ObjectManager::DestroySingleton();
 		if (nullptr != m_workThread)
 		{
 			delete m_workThread;
