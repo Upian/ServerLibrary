@@ -129,6 +129,9 @@ inline std::shared_ptr<T_Type> ObjectPool<T_Type>::AllocShared(Args && ..._args)
 template<typename T_Type>
 inline void ObjectPool<T_Type>::Release(T_Type* _obj)
 {
+	if (nullptr == _obj)
+		return;
+
 	_obj->~T_Type();
 
 	T_Type* headObject = m_objects.load(std::memory_order_acquire);
