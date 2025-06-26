@@ -1,4 +1,5 @@
 #include "IOCPObjectManager.h"
+#include "IOCPBuffer.h"
 
 namespace IOCP
 {

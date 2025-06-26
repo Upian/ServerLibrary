@@ -1,5 +1,5 @@
 #include "IOCPSession.h"
-
+#include "IOCPBuffer.h"
 IOCP::Session::Session()
 	:Socket()
 {

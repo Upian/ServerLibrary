@@ -1,13 +1,12 @@
 #pragma once
 #include "Util/ObjectPool.h"
-#include "IOCPSession.h"
 #include "Util/Singleton.h"
-#include <future>
-#include <unordered_map>
-#include <coroutine>
+#include "IOCPBuffer.h"
+#include "IOCPSession.h"
 namespace IOCP
 {	
-	//서버에 연결된 객체 Session, 
+	//서버에 연결된 객체 Session, IO용 Buffer 관리
+	// 
 	//서버가 연결한 객체 Proxy 관리
 	class ObjectManager : public Singleton<ObjectManager>
 	{

@@ -2,6 +2,8 @@
 #include "IOCPSocket.h"
 #include "IOCPHandler.h"
 #include "IOCPObjectManager.h"
+#include "IOCPBuffer.h"
+#include "IOCPSession.h"
 
 IOCP::Acceptor::Acceptor()
 {

@@ -1,7 +1,6 @@
 #pragma once
 #include <thread>
 #include "IOCPSocket.h"
-#include "IOCPBuffer.h"
 /*
 * IOCPSession
 * 연결된 클라이언트를 처리
@@ -11,6 +10,7 @@
 namespace IOCP
 {
 	//IOWorker
+	class IOBuffer;
 	class Session : public Socket, public std::enable_shared_from_this<Session>
 	{
 	public:
@@ -29,5 +29,6 @@ namespace IOCP
 	private:
 		Socket* m_listenSocket = nullptr;
 		char m_addressBuf[2 * (sizeof(SOCKADDR_IN) + 16)] = { 0, };
+//		Buffer m_buffer;
 	};
 }
