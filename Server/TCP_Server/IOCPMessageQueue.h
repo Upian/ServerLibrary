@@ -15,7 +15,6 @@ namespace IOCP
 	{
 		IOType ioType;
 		std::shared_ptr<Session> session;
-		Buffer buffer;
 	};
 
 	class MessageQueue : public Singleton<MessageQueue>
@@ -26,7 +25,7 @@ namespace IOCP
 
 
 	private:
-		ConcurrentQueue<Message*> m_recvQueue;
-		ConcurrentQueue<int> m_sendQueue;
+		ConcurrentQueue<Message*> m_recvQueue; // accept, recv
+		ConcurrentQueue<Message*> m_sendQueue;
 	};
 }
