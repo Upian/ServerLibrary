@@ -147,10 +147,12 @@
     <ClInclude Include="IOCPWorkThread.h" />
     <ClInclude Include="IOCPSession.h" />
     <ClInclude Include="IOCPObjectManager.h" />
+    <ClInclude Include="IOCPMessageQueue.h" />
     <ClInclude Include="WinSock.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IOCPAcceptor.cpp" />
+    <ClCompile Include="IOCPMessageQueue.cpp" />
     <ClCompile Include="IOCPPacketBuf.cpp" />
     <ClCompile Include="IOCPPacketQueue.cpp" />
     <ClCompile Include="IOCPServer.cpp" />

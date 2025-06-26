@@ -27,17 +27,17 @@ namespace IOCP
 		//recv
 		//send
 
-		inline bool WSASend(LPWSABUF _lpBuffers, DWORD _dwBufferCount, LPDWORD _lpNumberOfBytesSent, DWORD _dwFlags, LPWSAOVERLAPPED _lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE _lpCompletionRoutine);
-		inline bool WSARecv(LPWSABUF _lpBuffers, DWORD _dwBufferCount, LPDWORD _lpNumberOfBytesRecvd, LPDWORD _lpFlags, LPWSAOVERLAPPED _lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE _lpCompletionRoutine);
+		bool WSASend(LPWSABUF _lpBuffers, DWORD _dwBufferCount, LPDWORD _lpNumberOfBytesSent, DWORD _dwFlags, LPWSAOVERLAPPED _lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE _lpCompletionRoutine);
+		bool WSARecv(LPWSABUF _lpBuffers, DWORD _dwBufferCount, LPDWORD _lpNumberOfBytesRecvd, LPDWORD _lpFlags, LPWSAOVERLAPPED _lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE _lpCompletionRoutine);
 
-		inline bool WSASendTo(LPWSABUF _lpBuffers, DWORD _dwBufferCount, LPDWORD _lpNumberOfBytesSent, DWORD _dwFlags, const sockaddr* _lpTo, int _iToLen, LPWSAOVERLAPPED _lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE _lpCompletionRoutine);
-		inline bool WSARecvFrom(LPWSABUF _lpBuffers, DWORD _dwBufferCount, LPDWORD _lpNumberOfBytesRecvd, LPDWORD _lpFlags, sockaddr* _lpFrom, LPINT _lpFromlen, LPWSAOVERLAPPED _lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE _lpCompletionRoutine);
+		bool WSASendTo(LPWSABUF _lpBuffers, DWORD _dwBufferCount, LPDWORD _lpNumberOfBytesSent, DWORD _dwFlags, const sockaddr* _lpTo, int _iToLen, LPWSAOVERLAPPED _lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE _lpCompletionRoutine);
+		bool WSARecvFrom(LPWSABUF _lpBuffers, DWORD _dwBufferCount, LPDWORD _lpNumberOfBytesRecvd, LPDWORD _lpFlags, sockaddr* _lpFrom, LPINT _lpFromlen, LPWSAOVERLAPPED _lpOverlapped, LPWSAOVERLAPPED_COMPLETION_ROUTINE _lpCompletionRoutine);
 
 
 		bool ShutDown(int _how = SD_BOTH);
 		bool CloseSocket();
 
-	private:
+	protected:
 		SOCKET m_socket = INVALID_SOCKET;
 		LPFN_CONNECTEX m_lpfnConnectEX = nullptr;
 

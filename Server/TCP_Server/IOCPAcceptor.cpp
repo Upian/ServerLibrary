@@ -31,10 +31,9 @@ bool IOCP::Acceptor::Start(IOCP::Handler* _handler, unsigned short _port, int _m
 	for (int i = 0; i < _maxPostAccept; ++i)
 	{
 		auto session = m_objectManager->AllocSession();
-		OverlappedIO* io = m_objectManager->AllocIO(IOType::Accept, session);
-
+		auto buffer = m_objectManager->AllocBuffer(IOType::Accept, session);
 		session->SetListenSocket(&m_listenSocket);
-		session->DoAcceptEX(io);
+		session->PostAcceptEX(buffer);
 	}
 	
 	return true;

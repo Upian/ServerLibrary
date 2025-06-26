@@ -10,7 +10,7 @@ Socket::~Socket()
 		return;
 
 	this->CloseSocket();
-	m_socket == INVALID_SOCKET;
+	m_socket = INVALID_SOCKET;
 //	m_lpfnConnectEX = nullptr;
 }
 

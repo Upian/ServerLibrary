@@ -10,6 +10,7 @@
 
 namespace IOCP
 {
+	//IOWorker
 	class Session : public Socket, public std::enable_shared_from_this<Session>
 	{
 	public:
@@ -20,13 +21,13 @@ namespace IOCP
 		void SetListenSocket(Socket* _listenSocket) { m_listenSocket = _listenSocket; }
 		Socket* GetListenSocket() const { return m_listenSocket; }
 
-		bool DoAcceptEX(OverlappedIO* _io); //이 세선이 accept 대기
+		bool PostAcceptEX(IOBuffer* _buffer); //이 세선이 accept 대기
+		bool PostRecv(IOBuffer* _buffer);
 
 		void HandleAccept(); //Accept 되어 누군가 들어옴
 
 	private:
 		Socket* m_listenSocket = nullptr;
 		char m_addressBuf[2 * (sizeof(SOCKADDR_IN) + 16)] = { 0, };
-		Buffer m_buffer;
 	};
 }

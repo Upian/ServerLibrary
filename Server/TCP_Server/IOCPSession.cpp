@@ -15,13 +15,20 @@ IOCP::Session::~Session()
 {
 	m_listenSocket = nullptr;
 	memset(m_addressBuf, 0, sizeof(m_addressBuf));
-	m_buffer.Clear();
+//	m_buffer.Clear();
 }
 
-bool IOCP::Session::DoAcceptEX(OverlappedIO* _io)
+bool IOCP::Session::PostAcceptEX(IOBuffer* _buffer)
 {
 	DWORD lpdwBytesReceived = 0;
-	return IOCP::Socket::AcceptEX(m_listenSocket, m_addressBuf, 0, &lpdwBytesReceived, _io);
+	return IOCP::Socket::AcceptEX(m_listenSocket, m_addressBuf, 0, &lpdwBytesReceived, _buffer->GetOverlapped());
+}
+
+bool IOCP::Session::PostRecv(IOBuffer* _buffer)
+{
+	DWORD lpdwBytesReceived = 0;
+	DWORD lpFlag = 0;
+	return IOCP::Socket::WSARecv(_buffer->GetWSABuf(), 1, &lpdwBytesReceived, &lpFlag, _buffer->GetOverlapped(), NULL);
 }
 
 void IOCP::Session::HandleAccept()

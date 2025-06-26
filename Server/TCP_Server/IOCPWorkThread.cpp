@@ -45,11 +45,13 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 		if (0 == completionKey) //Á¾·á
 			break;
 
+		IOBuffer* ioBuffer = static_cast<IOBuffer*>(overlappedIO->buffer);
 		if (nullptr != overlappedIO &&
 			true == isSuccess &&
-			nullptr != overlappedIO->session)
+			false == ioBuffer->IsSessionExpired())
 		{
-			auto session = std::static_pointer_cast<IOCP::Session>(overlappedIO->session);
+			auto session = std::static_pointer_cast<IOCP::Session>(ioBuffer->GetSession());
+
 			switch (overlappedIO->ioType)
 			{
 			case IOType::None:
@@ -62,9 +64,9 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 				session->HandleAccept();
 
 				auto newSession = m_objectManager->AllocSession();
-				auto io = m_objectManager->AllocIO(IOType::Accept, newSession);
+				auto buffer = m_objectManager->AllocBuffer(IOType::Accept, newSession);
 				newSession->SetListenSocket(session->GetListenSocket());
-				std::cout << newSession->DoAcceptEX(io) << std::endl;
+				newSession->PostAcceptEX(buffer);
 			}
 			//				Send,
 			case IOType::Recv:
@@ -78,7 +80,7 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 			}
 		}
 
-		m_objectManager->ReleaseIO(overlappedIO);
+		m_objectManager->ReleaseBuffer(ioBuffer);
 
 		if (0 == bytesTransferred)
 			continue;

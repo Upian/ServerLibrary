@@ -31,7 +31,7 @@ void ClientThread(int _index, std::string _ip, short _port)
 	}
 
 	std::cout << "[" << _index << "] Connected to server.\n";
-/*
+	
 	// 메시지 보내기
 	std::string msg = "Hello from client " + std::to_string(_index);
 	send(sock, msg.c_str(), (int)msg.size(), 0);
@@ -44,7 +44,7 @@ void ClientThread(int _index, std::string _ip, short _port)
 		buffer[recvLen] = '\0';
 		std::cout << "[" << _index << "] Received: " << buffer << "\n";
 	}
-*/
+
 	std::this_thread::sleep_for(std::chrono::milliseconds(100)); // 테스트용 대기
 	closesocket(sock);
 }
@@ -58,14 +58,14 @@ int main()
 		return 1;
 	}
 
-	std::string ip;
-	short port = 0;
+	std::string ip = "127.0.0.1";
+	short port = 8888;
 	int clientCount = 0;
 
-	std::cout << "input IP: ";
-	std::cin >> ip;
-	std::cout << "input port: ";
-	std::cin >> port;
+//	std::cout << "input IP: ";
+//	std::cin >> ip;
+//	std::cout << "input port: ";
+//	std::cin >> port;
 	std::cout << "input client count: ";
 	std::cin >> clientCount;
 	
@@ -76,7 +76,7 @@ int main()
 	for (int i = 0; i < clientCount; ++i)
 	{
 		clientThreads.emplace_back(ClientThread, i, ip, port);
-		std::this_thread::sleep_for(std::chrono::milliseconds(10)); // 약간의 간격
+//		std::this_thread::sleep_for(std::chrono::milliseconds(10)); // 약간의 간격
 	}
 
 	WSACleanup();
