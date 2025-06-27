@@ -3,6 +3,7 @@
 #include "IOCPHandler.h"
 #include "IOCPSession.h"
 #include "IOCPObjectManager.h"
+#include "IOCPAcceptor.h"
 #include <iostream>
 //IOCP::Handler
 
@@ -62,11 +63,8 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 			case IOType::Accept:
 			{
 				session->HandleAccept();
-
-				auto newSession = m_objectManager->AllocSession();
-				auto buffer = m_objectManager->AllocBuffer(IOType::Accept, newSession);
-				newSession->SetListenSocket(session->GetListenSocket());
-				newSession->PostAcceptEX(buffer);
+				Acceptor::GetSingleton()->OnAcceptComplete(session);
+				Acceptor::GetSingleton()->PostAcceptEX();
 			}
 			//				Send,
 			case IOType::Recv:

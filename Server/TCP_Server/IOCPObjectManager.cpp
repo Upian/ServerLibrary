@@ -15,7 +15,7 @@ namespace IOCP
 
 	std::shared_ptr<Session> ObjectManager::AllocSession()
 	{
-		auto session = m_poolSession.AllocShared();
+		auto session = m_poolSession.AllocShared(m_idGenerator.Generate());
 		return session;
 	}
 

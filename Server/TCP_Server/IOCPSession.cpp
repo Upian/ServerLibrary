@@ -1,27 +1,21 @@
 #include "IOCPSession.h"
 #include "IOCPBuffer.h"
-IOCP::Session::Session()
-	:Socket()
-{
-	IOCP::Socket::CreateSocket();
-}
-
-IOCP::Session::Session(Socket* _listenSocket) : Socket(), m_listenSocket(_listenSocket)
+IOCP::Session::Session(uint64_t _id)
+	: Socket(), m_id(_id)
 {
 	IOCP::Socket::CreateSocket();
 }
 
 IOCP::Session::~Session()
 {
-	m_listenSocket = nullptr;
 	memset(m_addressBuf, 0, sizeof(m_addressBuf));
 //	m_buffer.Clear();
 }
 
-bool IOCP::Session::PostAcceptEX(IOBuffer* _buffer)
+bool IOCP::Session::PostAcceptEX(IOBuffer* _buffer, Socket* _listenSocket)
 {
 	DWORD lpdwBytesReceived = 0;
-	return IOCP::Socket::AcceptEX(m_listenSocket, m_addressBuf, 0, &lpdwBytesReceived, _buffer->GetOverlapped());
+	return IOCP::Socket::AcceptEX(_listenSocket, m_addressBuf, 0, &lpdwBytesReceived, _buffer->GetOverlapped());
 }
 
 bool IOCP::Session::PostRecv(IOBuffer* _buffer)

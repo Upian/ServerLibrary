@@ -1,6 +1,8 @@
 #pragma once
 #include "Util/ObjectPool.h"
 #include "Util/Singleton.h"
+#include "Util/SequenceGenerator.h"
+
 #include "IOCPBuffer.h"
 #include "IOCPSession.h"
 namespace IOCP
@@ -20,7 +22,8 @@ namespace IOCP
 		ObjectManager(int _poolSize);
 
 		ObjectPool<Session> m_poolSession;
-		std::mutex m_sessionMutex;
+		SequenceGenerator m_idGenerator;
+
 		ObjectPool<IOBuffer> m_poolBuffer;
 //		ObjectPool<Proxy> m_poolProxy;
 

@@ -10,6 +10,10 @@ IOCP::Acceptor::Acceptor()
 	m_objectManager = IOCP::ObjectManager::GetSingleton();
 }
 
+IOCP::Acceptor::~Acceptor()
+{
+}
+
 bool IOCP::Acceptor::Start(IOCP::Handler* _handler, unsigned short _port, int _maxPostAccept /*= 1*/)
 {
 	if (false == (m_listenSocket.CreateSocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED)))
@@ -32,11 +36,28 @@ bool IOCP::Acceptor::Start(IOCP::Handler* _handler, unsigned short _port, int _m
 	//Worker 생성 후 넣어줌
 	for (int i = 0; i < _maxPostAccept; ++i)
 	{
-		auto session = m_objectManager->AllocSession();
-		auto buffer = m_objectManager->AllocBuffer(IOType::Accept, session);
-		session->SetListenSocket(&m_listenSocket);
-		session->PostAcceptEX(buffer);
+		this->PostAcceptEX();
 	}
 	
 	return true;
+}
+
+bool IOCP::Acceptor::PostAcceptEX()
+{
+	auto session = m_objectManager->AllocSession();
+	auto buffer = m_objectManager->AllocBuffer(IOType::Accept, session);
+	bool result = session->PostAcceptEX(buffer, &m_listenSocket);
+
+	{
+		std::lock_guard<std::mutex> lock(m_acceptMutex);
+		m_waitSessionMap.emplace(session->GetID(), session);
+	}
+
+	return result;
+}
+
+void IOCP::Acceptor::OnAcceptComplete(std::shared_ptr<Session> _session)
+{
+	std::lock_guard<std::mutex> lock(m_acceptMutex);
+	m_waitSessionMap.erase(_session->GetID());
 }
