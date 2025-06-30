@@ -101,7 +101,7 @@ public:
 			}
 			else if (data->type == IOData::IOType::Send)
 			{
-				std::cout << "[Sent] Waiting for echo...\n";
+//				std::cout << "[Sent] Waiting for echo...\n";
 				memset(data->buffer, 0, sizeof(data->buffer));
 				data->wsaBuf.buf = data->buffer;
 				data->wsaBuf.len = sizeof(data->buffer);
@@ -141,7 +141,7 @@ int main()
 	WSAData wsaData;
 	WSAStartup(MAKEWORD(2, 2), &wsaData);
 
-	constexpr int CLIENT_COUNT = 10;
+	constexpr int CLIENT_COUNT = 1;
 	std::vector<std::jthread> threads;
 
 	for (int i = 0; i < CLIENT_COUNT; ++i)

@@ -1,4 +1,7 @@
 #include "IOCPServer.h"
+#include "IOCPAcceptor.h"
+#include "IOCPObjectManager.h"
+#include "IOCPMessageQueue.h"
 
 IOCP::Server::Server()
 {
@@ -6,8 +9,13 @@ IOCP::Server::Server()
 	{
 		//		error log
 	}
+	
 	m_objectManager = IOCP::ObjectManager::CreateSingleton();
+	m_messageQ = IOCP::MessageQueue::CreateSingleton();
 	m_acceptor = IOCP::Acceptor::CreateSingleton();
+	
+	m_acceptor->Initialize();
+	m_messageQ->Initialize();
 	if (nullptr == m_workThread)
 	{
 		m_workThread = new IOCP::WorkThread(&m_IOCPHandler);

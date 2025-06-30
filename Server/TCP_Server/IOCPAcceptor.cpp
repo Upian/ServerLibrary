@@ -7,11 +7,15 @@
 
 IOCP::Acceptor::Acceptor()
 {
-	m_objectManager = IOCP::ObjectManager::GetSingleton();
 }
 
 IOCP::Acceptor::~Acceptor()
 {
+}
+
+void IOCP::Acceptor::Initialize()
+{
+	m_objectManager = IOCP::ObjectManager::GetSingleton();
 }
 
 bool IOCP::Acceptor::Start(IOCP::Handler* _handler, unsigned short _port, int _maxPostAccept /*= 1*/)

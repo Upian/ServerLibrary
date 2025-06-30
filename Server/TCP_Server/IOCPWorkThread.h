@@ -9,6 +9,7 @@ namespace IOCP
 	class Handler;
 	class Server;
 	class ObjectManager;
+	class MessageQueue;
 
 	class WorkThread
 	{
@@ -23,5 +24,6 @@ namespace IOCP
 		std::jthread m_sendThread;
 		IOCP::Handler* m_iocpHandler = nullptr;
 		IOCP::ObjectManager* m_objectManager = nullptr;
+		IOCP::MessageQueue* m_messageQueue = nullptr;
 	};
 }

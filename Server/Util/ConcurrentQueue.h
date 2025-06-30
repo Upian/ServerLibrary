@@ -19,10 +19,10 @@ public:
 	ConcurrentQueue();
 
 	//	void AsyncPush(const T_Type& _value);
-	void TryPush(const T_Type& _value); //성공할때까지 대기
-	bool Push(const T_Type& _value);
-	T_Type TryPop(); //성공할때까지 대기
-	T_Type Pop();
+	void Push(const T_Type& _value); //성공할때까지 대기
+	bool TryPush(const T_Type& _value);
+	T_Type Pop(); //성공할때까지 대기
+	T_Type TryPop();
 
 private:
 	std::atomic<size_t> m_pushCursor = 0;
@@ -43,7 +43,7 @@ inline ConcurrentQueue<T_Type, maxSize>::ConcurrentQueue()
 //Slot.Seq가 pushCursor 일 경우에만 Push
 //Push 성공하면 Seq = idx + 1
 template<typename T_Type, size_t maxSize>
-inline void ConcurrentQueue<T_Type, maxSize>::TryPush(const T_Type& _value)
+inline void ConcurrentQueue<T_Type, maxSize>::Push(const T_Type& _value)
 {
 	size_t pushCursor = m_pushCursor.fetch_add(1, std::memory_order_acquire);
 	size_t expectedSeq = pushCursor;
@@ -76,7 +76,7 @@ inline void ConcurrentQueue<T_Type, maxSize>::TryPush(const T_Type& _value)
 //Slot.Seq가 pushCursor 일 경우에만 Push
 //Push 성공하면 Seq = idx + 1
 template<typename T_Type, size_t maxSize>
-inline bool ConcurrentQueue<T_Type, maxSize>::Push(const T_Type& _value)
+inline bool ConcurrentQueue<T_Type, maxSize>::TryPush(const T_Type& _value)
 {
 	size_t pushCursor = m_pushCursor.fetch_add(1, std::memory_order_acquire);
 	Slot& slot = m_typeArray[pushCursor % maxSize];
@@ -94,7 +94,7 @@ inline bool ConcurrentQueue<T_Type, maxSize>::Push(const T_Type& _value)
 //Slot.Seq가 popCursor + 1 일때만 Pop
 //Pop 성공 후 popCursor = popCursor + maxSize
 template<typename T_Type, size_t maxSize>
-inline T_Type ConcurrentQueue<T_Type, maxSize>::TryPop()
+inline T_Type ConcurrentQueue<T_Type, maxSize>::Pop()
 {
 	size_t popCursor = m_popCursor.fetch_add(1, std::memory_order_acquire);
 	size_t expectedSeq = popCursor + 1;
@@ -129,7 +129,7 @@ inline T_Type ConcurrentQueue<T_Type, maxSize>::TryPop()
 //Slot.Seq가 popCursor + 1 일때만 Pop
 //Pop 성공 후 popCursor = popCursor + maxSize
 template<typename T_Type, size_t maxSize>
-inline T_Type ConcurrentQueue<T_Type, maxSize>::Pop()
+inline T_Type ConcurrentQueue<T_Type, maxSize>::TryPop()
 {
 	size_t popCursor = m_popCursor.fetch_add(1, std::memory_order_acquire);
 	size_t expectedSeq = popCursor + 1;

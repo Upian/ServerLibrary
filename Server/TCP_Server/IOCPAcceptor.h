@@ -11,6 +11,7 @@ namespace IOCP
 	{
 		DECLARE_SINGLETON(Acceptor)
 	public:
+		void Initialize();
 //		Acceptor();
 		bool Start(IOCP::Handler* _handler, unsigned short _port, int _maxPostAccept = 1);
 

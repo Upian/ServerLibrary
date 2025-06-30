@@ -11,7 +11,7 @@ namespace IOCP
 {
 	//IOWorker
 	class IOBuffer;
-	class Session : public Socket, public std::enable_shared_from_this<Session>
+	class Session : protected Socket, public std::enable_shared_from_this<Session>
 	{
 	public:
 		Session() = delete;

@@ -7,11 +7,10 @@
 #include "Util/ConcurrentQueue.h"
 #include "IOCPHandler.h"
 #include "IOCPSocket.h"
-#include "IOCPAcceptor.h"
-#include "IOCPObjectManager.h"
 #include "IOCPWorkThread.h"
 #include "IOCPPacketBuf.h"
 #include "IOCPConcepts.h"
+
 
 /*
 * IOCPServer
@@ -25,6 +24,9 @@
 
 namespace IOCP
 {
+	class Acceptor;
+	class ObjectManager;
+	class MessageQueue;
 	class Server
 	{
 	public:
@@ -45,13 +47,14 @@ namespace IOCP
 		virtual std::shared_ptr<IOCP::PacketBuf> AllocPacketBuf() = 0; //IOCP::PacketPool로 할당하면 됨
 	private:
 		IOCP::ObjectManager* m_objectManager = nullptr; //Singleton
+		IOCP::Acceptor* m_acceptor = nullptr; //Singleton
 		IOCP::WorkThread* m_workThread = nullptr;
-		IOCP::Acceptor* m_acceptor = nullptr;
+		IOCP::MessageQueue* m_messageQ = nullptr; //Singleton
 
 		IOCP::Handler m_IOCPHandler;
 //		IOCP::Socket m_socket;
 
-		ConcurrentQueue<int> m_conQueue;
+		
 
 		WinSock m_winSock;
 	};

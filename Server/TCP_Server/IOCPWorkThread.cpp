@@ -4,17 +4,19 @@
 #include "IOCPSession.h"
 #include "IOCPObjectManager.h"
 #include "IOCPAcceptor.h"
+#include "IOCPMessageQueue.h"
 #include <iostream>
 //IOCP::Handler
 
 IOCP::WorkThread::WorkThread(IOCP::Handler* _iocpHandler) :
 	m_iocpHandler(_iocpHandler)
 {
-	m_objectManager = ObjectManager::GetSingleton();
 }
 
 void IOCP::WorkThread::Initialize(int _threadCount)
 {
+	m_objectManager = IOCP::ObjectManager::GetSingleton();
+	m_messageQueue = IOCP::MessageQueue::GetSingleton();
 	for (int i = 0; i < _threadCount; ++i)
 	{
 		m_workerThread.emplace_back(std::jthread(
@@ -65,6 +67,8 @@ void IOCP::WorkThread::Worker(std::stop_token _token)
 				session->HandleAccept();
 				Acceptor::GetSingleton()->OnAcceptComplete(session);
 				Acceptor::GetSingleton()->PostAcceptEX();
+
+				m_messageQueue->PushRecv(IOType::Accept, session);
 			}
 			//				Send,
 			case IOType::Recv:

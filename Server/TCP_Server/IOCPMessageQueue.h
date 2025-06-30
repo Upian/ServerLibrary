@@ -1,31 +1,25 @@
 #pragma once
 #include "Util/ConcurrentQueue.h"
 #include "Util/Singleton.h"
+#include "Util/ObjectPool.h"
 #include "IOCPSession.h"
-
-class IOCPMessage
-{
-//	Session
-//	Buffer
-};
+#include "IOCPPacketBuf.h"
 
 namespace IOCP
 {
-	class Message
-	{
-		IOType ioType;
-		std::shared_ptr<Session> session;
-	};
-
+	class ObjectManager;
 	class MessageQueue : public Singleton<MessageQueue>
 	{
 		DECLARE_SINGLETON(MessageQueue)
 	public:
-		void Push();
+		void Initialize();
 
+		void PushRecv(IOType _ioType, std::shared_ptr<Session> _session);
+		std::shared_ptr<IOCP::Message> PopRecv();
 
 	private:
-		ConcurrentQueue<Message*> m_recvQueue; // accept, recv
-		ConcurrentQueue<Message*> m_sendQueue;
+		ObjectManager* m_objectManager = nullptr;
+		ConcurrentQueue<std::shared_ptr<IOCP::Message> > m_recvQueue; // accept, recv
+		ConcurrentQueue<std::shared_ptr<IOCP::Message> > m_sendQueue;
 	};
 }

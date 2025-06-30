@@ -27,4 +27,10 @@ namespace IOCP
 	{
 		m_poolBuffer.Release(_buffer);
 	}
+
+	std::shared_ptr<Message> ObjectManager::AllocMessage(IOType _ioType, std::shared_ptr<Session> _session)
+	{
+		return m_poolMessage.AllocShared(_ioType, _session);
+	}
+
 }

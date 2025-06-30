@@ -5,6 +5,7 @@
 
 #include "IOCPBuffer.h"
 #include "IOCPSession.h"
+#include "IOCPPacketBuf.h"
 namespace IOCP
 {	
 	//서버에 연결된 객체 Session, IO용 Buffer 관리
@@ -18,6 +19,8 @@ namespace IOCP
 
 		IOBuffer* AllocBuffer(IOType _ioType, std::shared_ptr<Session> _session);
 		void ReleaseBuffer(IOBuffer* _buffer);
+
+		std::shared_ptr<Message> AllocMessage(IOType _ioType, std::shared_ptr<Session> _session);
 	private:
 		ObjectManager(int _poolSize);
 
@@ -25,7 +28,7 @@ namespace IOCP
 		SequenceGenerator m_idGenerator;
 
 		ObjectPool<IOBuffer> m_poolBuffer;
-//		ObjectPool<Proxy> m_poolProxy;
 
+		ObjectPool<Message> m_poolMessage;
 	};
 }
