@@ -7,7 +7,8 @@ int main(void)
 	cout << "run" << endl;
 //	auto server = TestServer::CreateSingleton();
 	TestIOCPServer server;
-	server.Initialize(1, 8888, 1);
+	server.GetNetwork()->Initialize(1);
+	server.GetNetwork()->Run(8888, 1);
 
 	getchar();
 }

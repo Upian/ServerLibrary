@@ -4,6 +4,7 @@
 #include "IOCPObjectManager.h"
 #include "IOCPBuffer.h"
 #include "IOCPSession.h"
+#include "IOCPNetwork.h"
 
 IOCP::Acceptor::Acceptor()
 {
@@ -15,7 +16,7 @@ IOCP::Acceptor::~Acceptor()
 
 void IOCP::Acceptor::Initialize()
 {
-	m_objectManager = IOCP::ObjectManager::GetSingleton();
+	m_objectManager = IOCP::Network::GetSingleton()->GetObjectManager();
 }
 
 bool IOCP::Acceptor::Start(IOCP::Handler* _handler, unsigned short _port, int _maxPostAccept /*= 1*/)

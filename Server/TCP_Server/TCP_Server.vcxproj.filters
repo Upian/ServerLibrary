@@ -21,7 +21,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IOCPServer.h">
+    <ClInclude Include="IOCPNetwork.h">
       <Filter>IOCP</Filter>
     </ClInclude>
     <ClInclude Include="IOCPBuffer.h">
@@ -62,7 +62,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IOCPServer.cpp">
+    <ClCompile Include="IOCPNetwork.cpp">
       <Filter>IOCP</Filter>
     </ClCompile>
     <ClCompile Include="IOCPSocket.cpp">

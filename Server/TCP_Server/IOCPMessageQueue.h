@@ -8,10 +8,12 @@
 namespace IOCP
 {
 	class ObjectManager;
-	class MessageQueue : public Singleton<MessageQueue>
+	class MessageQueue
 	{
-		DECLARE_SINGLETON(MessageQueue)
 	public:
+		MessageQueue();
+		~MessageQueue();
+
 		void Initialize();
 
 		void PushRecv(IOType _ioType, std::shared_ptr<Session> _session);

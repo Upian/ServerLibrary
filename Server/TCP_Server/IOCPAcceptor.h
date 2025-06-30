@@ -7,10 +7,11 @@ namespace IOCP
 	class Handler;
 	class ObjectManager;
 	class Session;
-	class Acceptor : public Singleton<Acceptor>
+	class Acceptor
 	{
-		DECLARE_SINGLETON(Acceptor)
 	public:
+		Acceptor();
+		~Acceptor();
 		void Initialize();
 //		Acceptor();
 		bool Start(IOCP::Handler* _handler, unsigned short _port, int _maxPostAccept = 1);

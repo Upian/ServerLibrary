@@ -11,10 +11,12 @@ namespace IOCP
 	//서버에 연결된 객체 Session, IO용 Buffer 관리
 	// 
 	//서버가 연결한 객체 Proxy 관리
-	class ObjectManager : public Singleton<ObjectManager>
+	class ObjectManager
 	{
-		DECLARE_SINGLETON(ObjectManager)
 	public:
+		ObjectManager();
+		~ObjectManager();
+
 		std::shared_ptr<Session> AllocSession();
 
 		IOBuffer* AllocBuffer(IOType _ioType, std::shared_ptr<Session> _session);
@@ -22,8 +24,6 @@ namespace IOCP
 
 		std::shared_ptr<Message> AllocMessage(IOType _ioType, std::shared_ptr<Session> _session);
 	private:
-		ObjectManager(int _poolSize);
-
 		ObjectPool<Session> m_poolSession;
 		SequenceGenerator m_idGenerator;
 

@@ -1,20 +1,20 @@
 #pragma once
 
-#include "TCP_Server/IOCPServer.h"
+#include "TCP_Server/IOCPNetwork.h"
 #include "TCP_Server/IOCPPacketPool.h"
 
-class TestIOCPPacket : public IOCP::PacketBuf
-{
 
-};
 
-class TestIOCPServer : public IOCP::Server
+class TestIOCPServer
 {
 public:
 	TestIOCPServer();
 	~TestIOCPServer();
-	virtual void HandleThread() override;
-	virtual std::shared_ptr<IOCP::PacketBuf> AllocPacketBuf() override;
+//	virtual void HandleThread() override;
+//	virtual std::shared_ptr<IOCP::PacketBuf> AllocPacketBuf() override;
+
+	IOCP::Network* GetNetwork() { return m_network; }
+	
 private:
-	IOCP::PacketPool<TestIOCPPacket> m_packetPool;
+	IOCP::Network* m_network = nullptr;
 };
